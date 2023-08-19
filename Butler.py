@@ -62,7 +62,7 @@ def version():
 # **************
 
 def platform():
-    print(TColors.HEADER+"Select platform for push build to itch\n"+TColors.ENDC)
+    print(TColors.HEADER+"Select platform for push build to\n"+TColors.ENDC)
     print("[1] - Windows")
     print("[2] - Linux")
     print("[3] - Mac")
