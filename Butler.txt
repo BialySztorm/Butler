@@ -1,0 +1,16 @@
+butler push directory user/game:channel
+
+--userversion 1.1.0
+--userversion-file buildnumber.txt
+--ignore '*.pdb'
+--if-changed
+
+Channels:
+win or windows - Windows executable
+linux -  Linux executable
+mac or osx - Mac executable
+android - Android application
+Channel names may contain multiple platforms
+
+library need to be installed for script
+pip install requests
