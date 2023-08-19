@@ -1,13 +1,14 @@
 import os, sys
 import requests
 from Butler_github import github
+# from Butler_build import Create, Remove
 
 # **************
 # * Constants
 # **************
 
 SiteName = "user/project"
-ProjectName = "Project"
+ProjectName = "Butler"
 DiscordHook = ''
 TokenPath = "token.env"
 
@@ -50,7 +51,7 @@ def version():
     elif action != '0':
         return -1
     f.close()
-    f = open(os.path.join(sys.path[0], "Butler-version.txt"),"w")
+    f = open(os.path.join(sys.path[0], "Butler_version.txt"),"w")
     f.write(currVersion)
     f.close()
     return currVersion
@@ -99,6 +100,12 @@ def mac(currVersion, body):
     #? Github
     github(ProjectName,currVersion,{"Mac"},body ,True,False,None,TokenPath)
 
+# def butler(currVersion, body):
+#     #? Github
+#     Create()
+#     github(ProjectName,currVersion,{"Build"},body ,True,False,None,TokenPath)
+#     Remove()
+
 # **************
 # * Main loop
 # **************
@@ -121,6 +128,9 @@ while(action!='0'):
         windows(version(), body)
         linux(version(), body) 
         mac(version(), body)
+    # elif action == '5':
+    #     wait = input(TColors.WARNING+"Comment butler code then press Enter to continue."+TColors.ENDC)
+    #     butler(version(), body)
     else:
         print(TColors.WARNING+"Wrong option"+TColors.ENDC)
     # print(version())
