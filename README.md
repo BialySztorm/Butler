@@ -12,11 +12,11 @@ Start the script with command line, choose release platform, select the version 
 ## Prerequisite
 
  - Downloaded [Python3](https://www.python.org/downloads/)
- - os & sys python modules
+ - [os](https://docs.python.org/3/library/os.html) & [sys](https://docs.python.org/3/library/sys.html) python modules
 
 1. itch:
  - [Butler](https://itchio.itch.io/butler) - Downloaded and added to PATH
- - Site name in constants section in Butler.py
+ - [Site name](https://itch.io/docs/butler/pushing.html) in constants section in Butler.py
 
 2. Discord:
  - [requests](https://pypi.org/project/requests/) python module
@@ -24,5 +24,5 @@ Start the script with command line, choose release platform, select the version 
 
 3. Github releases:
  - [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) in token.env file or change definition wherever it is
- - subprocess, shutil, [requests](https://pypi.org/project/requests/) & [tqdm](https://pypi.org/project/tqdm/) python modules
+ - [subprocess](https://docs.python.org/3/library/subprocess.html), [shutil](https://docs.python.org/3/library/shutil.html), [requests](https://pypi.org/project/requests/) & [tqdm](https://pypi.org/project/tqdm/) python modules
  - starting script in git repository directory
