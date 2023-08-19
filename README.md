@@ -11,7 +11,7 @@ Start the script with command line, choose release platform, select the version 
 
 ## Prerequisite
 
- - Downloaded Python3
+ - Downloaded [Python3](https://www.python.org/downloads/)
  - os & sys python modules
 
 1. itch:
@@ -19,10 +19,10 @@ Start the script with command line, choose release platform, select the version 
  - Site name in constants section in Butler.py
 
 2. Discord:
- - requests python module
- - Discord hook in constants section in Butler.py
+ - [requests](https://pypi.org/project/requests/) python module
+ - [Discord hook](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) in constants section in Butler.py
 
 3. Github releases:
- - Personal Access Token in token.env file or change definition wherever it is
- - subprocess, shutil, requests & tqdm python modules
+ - [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) in token.env file or change definition wherever it is
+ - subprocess, shutil, [requests](https://pypi.org/project/requests/) & [tqdm](https://pypi.org/project/tqdm/) python modules
  - starting script in git repository directory
