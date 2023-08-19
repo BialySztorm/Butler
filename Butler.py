@@ -117,6 +117,7 @@ while(action!='0'):
     if action == '0':
         continue
     body = input("Write text for release body:\n")
+    # body = ""
     print("\n")
     if action == '1':
         windows(version(), body)
