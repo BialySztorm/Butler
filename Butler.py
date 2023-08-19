@@ -75,7 +75,7 @@ def platform():
 
 def windows(currVersion, body):
     #? Itch
-    os.system("butler.exe pus1h windows "+SiteName+":win --if-changed --userversion "+currVersion)
+    os.system("butler.exe push windows "+SiteName+":win --if-changed --userversion "+currVersion)
     #? Discord
     payload = {"content":"Version: "+currVersion+" was pushed to itch on Windows channel"}        
     requests.post(DiscordHook, data=payload)
