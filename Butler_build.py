@@ -15,7 +15,7 @@ def Create():
     Copy selected files to the specified build folder.
     """
     print("Copying files to build...")
-    selected_files = {"Butler_github.py", "Butler_jira.py", "Butler.py", "Butler_version.txt", "README.md"}
+    selected_files = {"Butler_github.py", "Butler_jira.py", "Butler.py", "Butler_lib.py", "Butler_constants.py", "Butler_version.txt", "README.md"}
 
     # Create the build folder if it doesn't exist
     if not os.path.exists("Build"):
