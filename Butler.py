@@ -1,6 +1,7 @@
 import os, sys
 import requests
 from Butler_github import github
+from Butler_jira import jira
 # from Butler_build import Create, Remove
 
 # **************
@@ -81,6 +82,8 @@ def windows(currVersion, body):
     requests.post(DiscordHook, data=payload)
     #? Github
     github(ProjectName,currVersion,{"Windows"},body ,True,False,None,TokenPath)
+    #? Jira
+    jira(currVersion, body)
 
 def linux(currVersion, body):  
     #? Itch
@@ -90,6 +93,8 @@ def linux(currVersion, body):
     requests.post(DiscordHook, data=payload)
     #? Github
     github(ProjectName,currVersion,{"Linux"},body ,True,False,None,TokenPath)
+    #? Jira
+    jira(currVersion, body)
 
 def mac(currVersion, body):
     #? Itch
@@ -99,6 +104,8 @@ def mac(currVersion, body):
     requests.post(DiscordHook, data=payload)
     #? Github
     github(ProjectName,currVersion,{"Mac"},body ,True,False,None,TokenPath)
+    #? Jira
+    jira(currVersion, body)
 
 # def butler(currVersion, body):
 #     #? Github

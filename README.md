@@ -23,6 +23,14 @@ Start the script with command line, choose release platform, select the version 
  - [Discord hook](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) in constants section in Butler.py
 
 3. Github releases:
- - [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) in token.env file or change definition wherever it is
+ - [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) in github.env file or change definition wherever it is
  - [subprocess](https://docs.python.org/3/library/subprocess.html), [shutil](https://docs.python.org/3/library/shutil.html), [requests](https://pypi.org/project/requests/) & [tqdm](https://pypi.org/project/tqdm/) python modules
  - starting script in git repository directory
+
+4. Jira
+ - place this information in jira.env: \
+    JIRA_BASE_URL:=YOUR_JIRA_BASE_URL \
+    JIRA_PROJECT_KEY:=PROJECT_KEY \
+    JIRA_API_TOKEN:=JIRA_API_TOKEN \
+    JIRA_USER:=JIRA_USERNAME_OR_EMAIL
+ - requests, locale & datetime modules
