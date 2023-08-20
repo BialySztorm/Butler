@@ -1,14 +1,7 @@
 import os, shutil
+from Butler_constants import TColors
 
-class TColors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+# * Create build dir and copy needed files
 
 def Create():
     """
@@ -27,6 +20,7 @@ def Create():
         shutil.copy(file_path, destination_path)
     print(TColors.OKGREEN+"All files copied."+TColors.ENDC)
 
+# * delete build files
 
 def Remove():
     """

@@ -3,6 +3,10 @@ from requests.auth import HTTPBasicAuth
 from datetime import datetime
 from Butler_constants import  TColors, Config
 
+# **************
+# * Subprocesses
+# **************
+
 def get_current_date_formatted():
     current_date = datetime.now()
     
@@ -130,6 +134,10 @@ def get_latest_project_version(project_key, auth_username, auth_password, base_u
         print(TColors.WARNING+"Response:", response.text+TColors.ENDC)
         print(TColors.WARNING+"Response code:", response.status_code+TColors.ENDC)
 
+# **************
+# * Main function
+# **************
+
 def jira(version, body):
     # Wywołanie funkcji z odpowiednimi argumentami
     # print(Config)
@@ -146,3 +154,7 @@ def jira(version, body):
         version_description="draft"  # Opis nowego release
     )
     # print(get_latest_project_version(Config["JIRA_PROJECT_KEY"], "andrzejmmm1@gmail.com", Config["JIRA_API_TOKEN"], Config["JIRA_BASE_URL"]))
+
+# * Test run
+
+# jira("1.0.0","")
