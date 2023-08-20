@@ -1,6 +1,7 @@
 import requests, locale
 from requests.auth import HTTPBasicAuth
 from datetime import datetime
+from Butler_constants import  TColors, Config
 
 def get_current_date_formatted():
     current_date = datetime.now()
@@ -33,23 +34,6 @@ def find_different_elements(list1, list2):
             unique_elements.append(item)
     
     return unique_elements
-    
-def read_jira_env_file(file_path):
-    """
-    Read the Jira environment file and return its contents as a dictionary.
-
-    Parameters:
-        file_path (str): Path to the Jira environment file.
-
-    Returns:
-        dict: A dictionary containing the Jira configuration.
-    """
-    jira_config = {}
-    with open(file_path, "r") as file:
-        for line in file:
-            key, value = line.strip().split(":=")
-            jira_config[key] = value
-    return jira_config
 
 def create_jira_version(base_url, project_key, api_token, version_name, version_description):
     date = get_current_date_formatted()
@@ -146,18 +130,17 @@ def get_latest_project_version(project_key, auth_username, auth_password, base_u
 
 def jira(version, body):
     # Wywołanie funkcji z odpowiednimi argumentami
-    jira_config = read_jira_env_file("jira.env")
-    # print(jira_config)
+    # print(Config)
 
-    update_latest_release(jira_config["JIRA_PROJECT_KEY"],jira_config["JIRA_BASE_URL"],jira_config["JIRA_USER"],jira_config["JIRA_API_TOKEN"], f"v{version}", get_current_date_formatted(), body,True)
+    update_latest_release(Config["JIRA_PROJECT_KEY"],Config["JIRA_BASE_URL"],Config["JIRA_USER"],Config["JIRA_API_TOKEN"], f"v{version}", get_current_date_formatted(), body,True)
 
     version = increment_version(version)
 
     create_jira_version(
-        base_url=jira_config["JIRA_BASE_URL"],  # Zastąp adresem swojej instancji Jira
-        project_key=jira_config["JIRA_PROJECT_KEY"],  # Zastąp kluczem swojego projektu w Jira
-        api_token=jira_config["JIRA_API_TOKEN"], # Twój osobisty token dostępu do API Jira
+        base_url=Config["JIRA_BASE_URL"],  # Zastąp adresem swojej instancji Jira
+        project_key=Config["JIRA_PROJECT_KEY"],  # Zastąp kluczem swojego projektu w Jira
+        api_token=Config["JIRA_API_TOKEN"], # Twój osobisty token dostępu do API Jira
         version_name=f"v{version}-draft",  # Nazwa nowego release
         version_description="draft"  # Opis nowego release
     )
-    # print(get_latest_project_version(jira_config["JIRA_PROJECT_KEY"], "andrzejmmm1@gmail.com", jira_config["JIRA_API_TOKEN"], jira_config["JIRA_BASE_URL"]))
+    # print(get_latest_project_version(Config["JIRA_PROJECT_KEY"], "andrzejmmm1@gmail.com", Config["JIRA_API_TOKEN"], Config["JIRA_BASE_URL"]))

@@ -1,60 +1,8 @@
-import subprocess, shutil, requests, os
+import shutil, requests, os
+from Butler_constants import TColors, OsMapping, Config
+from Butler_lib import get_repository_info
 from tqdm import tqdm
 
-# **************
-# * Constants
-# **************
-class TColors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-
-os_mapping = {
-    "windows": "win",
-    "osx": "mac"
-}
-
-# **************
-# * ProgressBar
-# **************
-class TqdmProgressWrapper:
-    def __init__(self, iterable, total_size):
-        self.iterable = iterable
-        self.total_size = total_size
-        self.progress_bar = tqdm(total=total_size, unit="B", unit_scale=True, unit_divisor=1024)
-    
-    def __iter__(self):
-        for chunk in self.iterable:
-            self.progress_bar.update(len(chunk))
-            yield chunk
-    
-    def close(self):
-        self.progress_bar.close()
-
-# **************
-# * Get basic information
-# **************
-
-def get_access_token(token_file):
-    with open(token_file, "r") as f:
-        return f.read().strip()
-
-def get_repository_info():
-    repo_info = subprocess.check_output(["git", "remote", "-v"], text=True).splitlines()
-    for line in repo_info:
-        if "origin" in line and "(fetch)" in line:
-            parts = line.split()
-            repo_url = parts[1]
-            owner, repo_name = repo_url.split("/")[-2:]
-            repo_name = repo_name.replace(".git", "")
-            current_commit = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
-            return owner, repo_name, current_commit
-    return None, None
 
 # **************
 # * Subprocesses
@@ -163,8 +111,8 @@ def delete_release_asset(repo_owner, repo_name, access_token, release_id, asset_
 def create_zip_archive(src_dirs, zip_path):
     zips_paths = []
     for src_dir in src_dirs:
-        if src_dir.lower() in os_mapping:
-            zip_os = os_mapping[src_dir.lower()]
+        if src_dir.lower() in OsMapping:
+            zip_os = OsMapping[src_dir.lower()]
         else:
             zip_os = src_dir.lower()
         num_files = len(os.listdir(src_dir))
@@ -193,7 +141,7 @@ def delete_zip_archive(src_dirs):
 # * Main function
 # **************
 
-def github(ProjectName: str, Version: str, Platforms: list[str], Body = "",Draft = True, Prerelease = False, Commit: str = None, TokenPath = "token.env"):
+def github(ProjectName: str, Version: str, Platforms: list[str], Body = "",Draft = True, Prerelease = False, Commit: str = None, access_token = Config["GITHUB_API_TOKEN"]):
     """
     Manage github releases.
 
@@ -215,7 +163,7 @@ def github(ProjectName: str, Version: str, Platforms: list[str], Body = "",Draft
     if(Commit):
         current_commit = Commit
 
-    access_token = get_access_token(TokenPath)
+    # access_token = get_access_token(TokenPath)
     # print(access_token)
     
 

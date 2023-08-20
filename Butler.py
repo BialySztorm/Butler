@@ -3,25 +3,7 @@ import requests
 from Butler_github import github
 from Butler_jira import jira
 # from Butler_build import Create, Remove
-
-# **************
-# * Constants
-# **************
-
-SiteName = "user/project"
-ProjectName = "Butler"
-DiscordHook = ''
-TokenPath = "token.env"
-
-class TColors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+from Butler_constants import TColors, Config
 
 # **************
 # * Version
@@ -76,34 +58,34 @@ def platform():
 
 def windows(currVersion, body):
     #? Itch
-    os.system("butler.exe push windows "+SiteName+":win --if-changed --userversion "+currVersion)
+    os.system("butler.exe push windows "+Config["ITCH_SITE_NAME"]+":win --if-changed --userversion "+currVersion)
     #? Discord
     payload = {"content":"Version: "+currVersion+" was pushed to itch on Windows channel"}        
-    requests.post(DiscordHook, data=payload)
+    requests.post(Config["DISCORD_HOOK"], data=payload)
     #? Github
-    github(ProjectName,currVersion,{"Windows"},body ,True,False,None,TokenPath)
+    github(Config["PROJECT_NAME"],currVersion,{"Windows"},body ,True,False,None)
     #? Jira
     jira(currVersion, body)
 
 def linux(currVersion, body):  
     #? Itch
-    os.system("butler.exe push linux "+SiteName+":linux --if-changed --userversion "+currVersion)
+    os.system("butler.exe push linux "+Config["ITCH_SITE_NAME"]+":linux --if-changed --userversion "+currVersion)
     #? Discord
     payload = {"content":"Version: "+currVersion+" was pushed to itch on Linux channel"}        
-    requests.post(DiscordHook, data=payload)
+    requests.post(Config["DISCORD_HOOK"], data=payload)
     #? Github
-    github(ProjectName,currVersion,{"Linux"},body ,True,False,None,TokenPath)
+    github(Config["PROJECT_NAME"],currVersion,{"Linux"},body ,True,False,None)
     #? Jira
     jira(currVersion, body)
 
 def mac(currVersion, body):
     #? Itch
-    os.system("butler push mac "+SiteName+":mac --if-changed --userversion "+currVersion)
+    os.system("butler push mac "+Config["ITCH_SITE_NAME"]+":mac --if-changed --userversion "+currVersion)
     #? Discord
     payload = {"content":"Version: "+currVersion+" was pushed to itch on Mac channel"}        
-    requests.post(DiscordHook, data=payload)
+    requests.post(Config["DISCORD_HOOK"], data=payload)
     #? Github
-    github(ProjectName,currVersion,{"Mac"},body ,True,False,None,TokenPath)
+    github(Config["PROJECT_NAME"],currVersion,{"Mac"},body ,True,False,None)
     #? Jira
     jira(currVersion, body)
 
@@ -117,30 +99,33 @@ def mac(currVersion, body):
 # * Main loop
 # **************
 
+if __name__ == "__main__":
+    action = '-1'
+    while(action!='0'):
+        action = platform()
+        if action == '0':
+            continue
+        body = input("Write text for release body:\n")
+        # body = ""
+        print("\n")
+        if action == '1':
+            windows(version(), body)
+        elif action == '2':
+            linux(version(), body) 
+        elif action == '3':
+            mac(version(), body)
+        elif action == '4':
+            windows(version(), body)
+            linux(version(), body) 
+            mac(version(), body)
+        # elif action == '5':
+        #     wait = input(TColors.WARNING+"Comment butler code then press Enter to continue."+TColors.ENDC)
+        #     butler(version(), body)
+        else:
+            print(TColors.WARNING+"Wrong option"+TColors.ENDC)
+        # print(version())
+        wait = input(TColors.OKBLUE+"Press Enter to continue."+TColors.ENDC)
+        os.system("cls")
 
-action = '-1'
-while(action!='0'):
-    action = platform()
-    if action == '0':
-        continue
-    body = input("Write text for release body:\n")
-    # body = ""
-    print("\n")
-    if action == '1':
-        windows(version(), body)
-    elif action == '2':
-        linux(version(), body) 
-    elif action == '3':
-        mac(version(), body)
-    elif action == '4':
-        windows(version(), body)
-        linux(version(), body) 
-        mac(version(), body)
-    # elif action == '5':
-    #     wait = input(TColors.WARNING+"Comment butler code then press Enter to continue."+TColors.ENDC)
-    #     butler(version(), body)
-    else:
-        print(TColors.WARNING+"Wrong option"+TColors.ENDC)
-    # print(version())
-    wait = input(TColors.OKBLUE+"Press Enter to continue."+TColors.ENDC)
-    os.system("cls")
+
+
