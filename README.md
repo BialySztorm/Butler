@@ -4,15 +4,15 @@
 
 Simple drag all files to your build directory(all build files should be under child directory with platform name), complete the prerequisite for chosen platforms, comments things you don't gonna use and you are ready to go.
 
-You can easy customize constants if you want in Butler.py
+You can easy customize constants if you want in Butler_constants.py
 
-Start the script with command line, choose release platform, select the version change you wanna do, and next everything gonna do for you automatically.
+Start the script with command line with "python Butler.py", choose release platform, select the version change you wanna do, and next everything gonna do for you automatically.
 
 
 ## Prerequisite
 
  - Downloaded [Python3](https://www.python.org/downloads/)
- - keyboard, [os](https://docs.python.org/3/library/os.html) & [sys](https://docs.python.org/3/library/sys.html) python modules
+ - [keyboard](https://pypi.org/project/keyboard/), [os](https://docs.python.org/3/library/os.html) & [sys](https://docs.python.org/3/library/sys.html) python modules
 
 1. itch:
  - [Butler](https://itchio.itch.io/butler) - Downloaded and added to PATH
@@ -33,4 +33,4 @@ Start the script with command line, choose release platform, select the version 
     JIRA_PROJECT_KEY:=PROJECT_KEY \
     JIRA_API_TOKEN:=JIRA_API_TOKEN \
     JIRA_USER:=JIRA_USERNAME_OR_EMAIL
- - requests, locale & datetime modules
+ - [requests](https://pypi.org/project/requests/), [locale](https://docs.python.org/3/library/locale.html) & [datetime](https://docs.python.org/3/library/datetime.html) modules
