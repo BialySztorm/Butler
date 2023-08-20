@@ -110,7 +110,7 @@ def mac(currVersion, body):
 # def butler(currVersion, body):
 #     #? Github
 #     Create()
-#     github(ProjectName,currVersion,{"Build"},body ,True,False,None,TokenPath)
+#     github(ProjectName,currVersion,{"Build"},body ,False,False,None,TokenPath)
 #     Remove()
 
 # **************
