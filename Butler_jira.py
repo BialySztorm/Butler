@@ -36,6 +36,7 @@ def find_different_elements(list1, list2):
     return unique_elements
 
 def create_jira_version(base_url, project_key, api_token, version_name, version_description):
+    print("Creating new jira release")
     date = get_current_date_formatted()
     # print(date)
 
@@ -57,13 +58,14 @@ def create_jira_version(base_url, project_key, api_token, version_name, version_
     response = requests.post(url, json=payload, headers=headers, auth=auth)
     
     if response.status_code == 201:
-        print("Version created successfully in Jira.")
+        print(TColors.OKGREEN+"Version created successfully in Jira."+TColors.ENDC)
     else:
-        print("Failed to create new version in Jira.")
-        print("Response:", response.text)
-        print("Response code:", response.status_code)
+        print(TColors.FAIL+"Failed to create new version in Jira."+TColors.ENDC)
+        print(TColors.WARNING+"Response:", response.text+TColors.ENDC)
+        print(TColors.WARNING+"Response code:", response.status_code+TColors.ENDC)
 
 def update_latest_release(project_key, base_url, username, password, version_name, release_date, version_description, released=False):
+    print("Updating latest jira release")
     try:
         versions_url = f"{base_url}/rest/api/2/project/{project_key}/versions"
         auth = HTTPBasicAuth(username, password)
@@ -92,19 +94,19 @@ def update_latest_release(project_key, base_url, username, password, version_nam
 
                     update_response = requests.put(update_url, json=data, headers=headers, auth=auth)
                     if update_response.status_code == 200:
-                        print("Latest version updated successfully.")
+                        print(TColors.OKGREEN+"Latest version updated successfully."+TColors.ENDC)
                     else:
-                        print("Failed to update latest version.")
-                        print("Response:", update_response.text)
+                        print(TColors.FAIL+"Failed to update latest version."+TColors.ENDC)
+                        print(TColors.WARNING+"Response:", update_response.text+TColors.ENDC)
                 else:
-                    print("No released versions found for the project.")
+                    print(TColors.WARNING+"No released versions found for the project."+TColors.ENDC)
             else:
-                print("No versions found for the project.")
+                print(TColors.WARNING+"No versions found for the project."+TColors.ENDC)
         else:
-            print("Failed to retrieve versions.")
-            print("Response:", response.text)
+            print(TColors.FAIL+"Failed to retrieve versions."+TColors.ENDC)
+            print(TColors.WARNING+"Response:", response.text+TColors.ENDC)
     except Exception as e:
-        print("An error occurred:", e)
+        print(TColors.FAIL+"An error occurred:", e+TColors.ENDC)
 
 def get_latest_project_version(project_key, auth_username, auth_password, base_url):
     url = f"{base_url}/rest/api/2/project/{project_key}/versions"
@@ -122,11 +124,11 @@ def get_latest_project_version(project_key, auth_username, auth_password, base_u
             latest_version = max(versions, key=lambda version: version.get("startDate"))
             return latest_version
         else:
-            print("No versions found for the project.")
+            print(TColors.WARNING+"No versions found for the project."+TColors.ENDC)
     else:
-        print("Failed to retrieve versions for the project.")
-        print("Response:", response.text)
-        print("Response code:", response.status_code)
+        print(TColors.FAIL+"Failed to retrieve versions for the project."+TColors.ENDC)
+        print(TColors.WARNING+"Response:", response.text+TColors.ENDC)
+        print(TColors.WARNING+"Response code:", response.status_code+TColors.ENDC)
 
 def jira(version, body):
     # Wywołanie funkcji z odpowiednimi argumentami
