@@ -12,23 +12,23 @@ Start the script with command line, choose release platform, select the version 
 ## Prerequisite
 
  - Downloaded [Python3](https://www.python.org/downloads/)
- - [os](https://docs.python.org/3/library/os.html) & [sys](https://docs.python.org/3/library/sys.html) python modules
+ - keyboard, [os](https://docs.python.org/3/library/os.html) & [sys](https://docs.python.org/3/library/sys.html) python modules
 
 1. itch:
  - [Butler](https://itchio.itch.io/butler) - Downloaded and added to PATH
- - [Site name](https://itch.io/docs/butler/pushing.html) in constants section in Butler.py
+ - ITCH_SITE_NAME:=[Site name](https://itch.io/docs/butler/pushing.html) in .env
 
 2. Discord:
  - [requests](https://pypi.org/project/requests/) python module
- - [Discord hook](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) in constants section in Butler.py
+ - DISCORD_HOOK:=[Discord hook](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) in .env
 
 3. Github releases:
- - [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) in github.env file or change definition wherever it is
+ - GITHUB_API_TOKEN:=[Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) in .env file or change definition wherever it is
  - [subprocess](https://docs.python.org/3/library/subprocess.html), [shutil](https://docs.python.org/3/library/shutil.html), [requests](https://pypi.org/project/requests/) & [tqdm](https://pypi.org/project/tqdm/) python modules
  - starting script in git repository directory
 
 4. Jira
- - place this information in jira.env: \
+ - place this information in .env: \
     JIRA_BASE_URL:=YOUR_JIRA_BASE_URL \
     JIRA_PROJECT_KEY:=PROJECT_KEY \
     JIRA_API_TOKEN:=JIRA_API_TOKEN \
