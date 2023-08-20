@@ -226,7 +226,7 @@ def main():
 
             try:
                 if selected_platform == "Butler":
-                    butler(version,body,selected_releases)
+                    butler(version,body)
                 elif selected_platform == "Windows":   
                     windows(version,body,selected_releases)   
                 elif selected_platform == "Linux":
@@ -244,7 +244,7 @@ def main():
                 f.close()
 
             except:
-                print()
+                print("Error when uploading")
             
 
             wait = input("Press enter to continue...")
