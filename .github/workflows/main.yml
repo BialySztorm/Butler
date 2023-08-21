@@ -32,7 +32,8 @@ jobs:
       - name: Create Release for Linux
         uses: softprops/action-gh-release@v1
         with:
-          files: dist/Butler  # Ścieżka do plików dołączanych do wydania
+          asset_path: dist/Butler  # Ścieżka do plików dołączanych do wydania
+          asset_name: Butler-linux
         env:
           GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
 
@@ -59,7 +60,8 @@ jobs:
       - name: Create Release for macOS
         uses: softprops/action-gh-release@v1
         with:
-          files: dist/Butler.app  # Ścieżka do plików dołączanych do wydania
+          asset_path: dist/Butler.app  # Ścieżka do plików dołączanych do wydania
+          asset_name: Butler-mac
         env:
           GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
 
@@ -86,6 +88,7 @@ jobs:
       - name: Create Release for Windows
         uses: softprops/action-gh-release@v1
         with:
-          files:  dist/Butler.exe # Ścieżka do plików dołączanych do wydania
+          asset_path:  dist/Butler.exe # Ścieżka do plików dołączanych do wydania
+          asset_name: Butler-win.exe
         env:
           GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
