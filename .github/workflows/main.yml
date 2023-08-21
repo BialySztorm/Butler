@@ -29,11 +29,14 @@ jobs:
       - name: Build executables for Linux
         run: python .github/workflows/build_executables.py
 
+      - name: Rename Executable
+        run: |
+          mv dist/Butler dist/Butler-linux
+
       - name: Create Release for Linux
-        uses: actions/upload-release-asset@v1
+        uses: softprops/action-gh-release@v1
         with:
-          asset_path: dist/Butler  # Ścieżka do plików dołączanych do wydania
-          asset_name: Butler-linux
+          files: dist/Butler-linux  # Ścieżka do plików dołączanych do wydania
         env:
           GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
 
@@ -57,11 +60,14 @@ jobs:
       - name: Build executables for macOS
         run: python .github/workflows/build_executables.py
 
+      - name: Rename Executable
+        run: |
+          mv dist/Butler dist/Butler-mac
+
       - name: Create Release for macOS
-        uses: actions/upload-release-asset@v1
+        uses: softprops/action-gh-release@v1
         with:
-          asset_path: dist/Butler.app  # Ścieżka do plików dołączanych do wydania
-          asset_name: Butler-mac
+          files: dist/Butler-mac  # Ścieżka do plików dołączanych do wydania
         env:
           GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
 
@@ -85,10 +91,13 @@ jobs:
       - name: Build executables for Windows
         run: python .github/workflows/build_executables.py
 
+      - name: Rename Executable
+        run: |
+          mv dist/Butler.exe dist/Butler-win.exe
+
       - name: Create Release for Windows
-        uses: actions/upload-release-asset@v1
+        uses: softprops/action-gh-release@v1
         with:
-          asset_path:  dist/Butler.exe # Ścieżka do plików dołączanych do wydania
-          asset_name: Butler-win.exe
+          files:  dist/Butler-win.exe # Ścieżka do plików dołączanych do wydania
         env:
           GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
