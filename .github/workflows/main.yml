@@ -34,7 +34,7 @@ jobs:
         with:
           files: dist/Butler  # Ścieżka do plików dołączanych do wydania
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
 
   build_mac:
     name: Build for macOS
@@ -61,7 +61,7 @@ jobs:
         with:
           files: dist/Butler.app  # Ścieżka do plików dołączanych do wydania
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
 
   build_windows:
     name: Build for Windows
@@ -88,4 +88,4 @@ jobs:
         with:
           files:  dist/Butler.exe # Ścieżka do plików dołączanych do wydania
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
