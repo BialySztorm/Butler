@@ -2,14 +2,30 @@
 
 ## Installation and usage
 
-Simple drag all files to your build directory(all build files should be under child directory with platform name), complete the prerequisite for chosen platforms, comments things you don't gonna use and you are ready to go.
+Simple drag all files to your build directory(all build files should be under child directory with platform name), complete the prerequisite for chosen platforms, if you are using python script comment things you don't gonna use and you are ready to go.
 
 You can easy customize constants if you want in Butler_constants.py
 
-Start the script with command line with "python Butler.py", choose release platform, select the version change you wanna do, and next everything gonna do for you automatically.
+To start the script paste in command line "python Butler.py", choose release platform, select the version change you wanna do, and next everything gonna do for you automatically.
 
+## Prerequisite for binary file
+1. itch:
+ - ITCH_SITE_NAME:=[Site name](https://itch.io/docs/butler/pushing.html) in .env
 
-## Prerequisite
+2. Discord:
+ - DISCORD_HOOK:=[Discord hook](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) in .env
+
+3. Github releases:
+ - GITHUB_API_TOKEN:=[Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) in .env file or change definition wherever it is
+ - starting script in git repository directory
+
+4. Jira
+ - place this information in .env: \
+    JIRA_BASE_URL:=YOUR_JIRA_BASE_URL \
+    JIRA_PROJECT_KEY:=PROJECT_KEY \
+    JIRA_API_TOKEN:=JIRA_API_TOKEN \
+    JIRA_USER:=JIRA_USERNAME_OR_EMAIL
+## Prerequisite for python script
 
  - Downloaded [Python3](https://www.python.org/downloads/)
  - [keyboard](https://pypi.org/project/keyboard/), [os](https://docs.python.org/3/library/os.html) & [sys](https://docs.python.org/3/library/sys.html) python modules
