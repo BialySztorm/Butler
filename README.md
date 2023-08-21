@@ -50,3 +50,8 @@ To start the script paste in command line "python Butler.py", choose release pla
     JIRA_API_TOKEN:=JIRA_API_TOKEN \
     JIRA_USER:=JIRA_USERNAME_OR_EMAIL
  - [requests](https://pypi.org/project/requests/), [locale](https://docs.python.org/3/library/locale.html) & [datetime](https://docs.python.org/3/library/datetime.html) modules
+
+| | |
+|:-------------------------:|:-------------------------:|
+| <img width="1604" alt="Screenshot_2023-08-21_092807" src="https://raw.githubusercontent.com/BialySztorm/Butler/main/.github/Screenshot_2023-08-21_092807.png"> | <img width="1604" alt="Screenshot_2023-08-21_092821" src="https://raw.githubusercontent.com/BialySztorm/Butler/main/.github/Screenshot_2023-08-21_092821.png"> |
+| <img width="1604" alt="Screenshot_2023-08-21_092830" src="https://raw.githubusercontent.com/BialySztorm/Butler/main/.github/Screenshot_2023-08-21_092830.png"> | <img width="1604" alt="Screenshot_2023-08-21_093310" src="https://raw.githubusercontent.com/BialySztorm/Butler/main/.github/Screenshot_2023-08-21_093310.png"> |
