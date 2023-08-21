@@ -1,12 +1,12 @@
 name: Build Executables
 
 on:
-  # release:
-  #   types:
-  #     - published
-  push:
-    branches:
-      - main
+  release:
+    types:
+      - published
+  # push:
+  #   branches:
+  #     - main
 
 jobs:
   build_linux:
