@@ -1,6 +1,6 @@
-﻿keyboard==0.13.5
-pyinstaller==5.13.0
-pyinstaller-hooks-contrib==2023.7
-requests==2.28.2
-requests-toolbelt==1.0.0
-tqdm==4.66.1
+﻿keyboard>=0.13.5
+pyinstaller>=5.13.0
+pyinstaller-hooks-contrib>=2023.7
+requests>=2.28.2
+requests-toolbelt>=1.0.0
+tqdm>=4.66.1

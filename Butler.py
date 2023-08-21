@@ -1,4 +1,4 @@
-import os, sys, keyboard
+import os, sys, keyboard, re
 import requests
 from Butler_github import github
 from Butler_jira import jira
@@ -162,9 +162,14 @@ def main():
             display_menu(menu_options, selected_index, prefix="Select platform to release on:", suffix=error)
             menu_len = len(menu_options)
         elif selected_view == 1:
-            f = open("Butler_version.txt","r")
-            version = f.read()
-            f.close()
+            try:
+                f = open("Butler_version.txt","r")
+                version = f.read()
+                f.close()
+            except Exception as e:
+                print(TColors.FAIL+"Error occurred when trying to open Butler_version.txt"+TColors.ENDC)
+                print(TColors.WARNING+f"Exception: {e}"+TColors.ENDC)
+                sys.exit(int(re.search(r'\[Errno (\d+)\]', str(e)).group(1)))
             display_menu(version_options, selected_index, prefix="Current Version is: v"+version, suffix=error+f"\nSelected platform: {selected_platform}")
             menu_len = len(version_options)
         elif selected_view == 2:
@@ -209,7 +214,7 @@ def main():
                         if selected_option == "go back":
                             selected_index = 0
                             selected_view = 1
-                            selected_releases = {}
+                            selected_releases = []
                         elif selected_option == "submit":
                             if len(selected_releases):
                                 selected_view = 3
@@ -243,8 +248,9 @@ def main():
                 f.write(version)
                 f.close()
 
-            except:
-                print("Error when uploading")
+            except Exception as e:
+                print(TColors.FAIL+"Error when uploading"+TColors.ENDC)
+                print(TColors.WARNING+f"Exception: {e}"+TColors.ENDC)
             
 
             wait = input("Press enter to continue...")
