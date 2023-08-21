@@ -162,7 +162,7 @@ def main():
             display_menu(menu_options, selected_index, prefix="Select platform to release on:", suffix=error)
             menu_len = len(menu_options)
         elif selected_view == 1:
-            f = open(os.path.join(sys.path[0], "Butler_version.txt"),"r")
+            f = open("Butler_version.txt","r")
             version = f.read()
             f.close()
             display_menu(version_options, selected_index, prefix="Current Version is: v"+version, suffix=error+f"\nSelected platform: {selected_platform}")
@@ -239,7 +239,7 @@ def main():
                     mac(version,body,selected_releases)
 
                 # save new version
-                f = open(os.path.join(sys.path[0], "Butler_version.txt"),"w")
+                f = open("Butler_version.txt","w")
                 f.write(version)
                 f.close()
 
