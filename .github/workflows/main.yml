@@ -30,7 +30,7 @@ jobs:
         run: python .github/workflows/build_executables.py
 
       - name: Create Release for Linux
-        uses: softprops/action-gh-release@v1
+        uses: actions/upload-release-asset@v1
         with:
           asset_path: dist/Butler  # Ścieżka do plików dołączanych do wydania
           asset_name: Butler-linux
@@ -58,7 +58,7 @@ jobs:
         run: python .github/workflows/build_executables.py
 
       - name: Create Release for macOS
-        uses: softprops/action-gh-release@v1
+        uses: actions/upload-release-asset@v1
         with:
           asset_path: dist/Butler.app  # Ścieżka do plików dołączanych do wydania
           asset_name: Butler-mac
@@ -86,7 +86,7 @@ jobs:
         run: python .github/workflows/build_executables.py
 
       - name: Create Release for Windows
-        uses: softprops/action-gh-release@v1
+        uses: actions/upload-release-asset@v1
         with:
           asset_path:  dist/Butler.exe # Ścieżka do plików dołączanych do wydania
           asset_name: Butler-win.exe
