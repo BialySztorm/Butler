@@ -1,9 +1,12 @@
 name: Build Executables
 
 on:
-  release:
-    types:
-      - published
+  # release:
+  #   types:
+  #     - published
+  push:
+    branches:
+      - main
 
 jobs:
   build_linux:
@@ -16,7 +19,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.x
+          python-version: 3.9
 
       - name: Install dependencies
         run: |
@@ -43,7 +46,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.x
+          python-version: 3.9
 
       - name: Install dependencies
         run: |
@@ -70,7 +73,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.x
+          python-version: 3.9
 
       - name: Install dependencies
         run: |
