@@ -1,5 +1,6 @@
 import subprocess
 import platform
+import sys
 
 def build_for_linux():
     build_command = "python -m PyInstaller --onefile Butler.py"
@@ -32,6 +33,8 @@ if system == "Linux":
 elif system == "Darwin":
     build_for_mac()
 elif system == "Windows":
+    if sys.stdout.encoding != 'utf-8':
+        sys.stdout = open(sys.stdout.fileno(), mode='w', encoding='utf-8', buffering=1)
     build_for_windows()
 else:
     print("Nieobsługiwany system operacyjny.")
