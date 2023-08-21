@@ -13,6 +13,9 @@ def Create():
     # Create the build folder if it doesn't exist
     if not os.path.exists("Build"):
         os.makedirs("Build")
+    else:
+        shutil.rmtree("Build")
+        os.makedirs("Build")
 
     for file_path in selected_files:
         file_name = os.path.basename(file_path)
