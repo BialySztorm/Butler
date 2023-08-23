@@ -1,11 +1,13 @@
 import subprocess
-import sys, re
+import sys
+import re
 
 # **************
 # * Functions
 # **************
 
 # * Reading env file
+
 
 def read_env_file(file_path):
     """
@@ -31,6 +33,7 @@ def read_env_file(file_path):
 
 # * Reading repository info
 
+
 def get_repository_info():
     repo_info = subprocess.check_output(["git", "remote", "-v"], text=True).splitlines()
     for line in repo_info:
@@ -45,6 +48,7 @@ def get_repository_info():
 
 # * Creting files
 
+
 def create_clear_data_files():
     files_to_create = {
         "Butler_version.txt": "0.0.0",
@@ -57,7 +61,7 @@ PROJECT_NAME:=
 DISCORD_HOOK:= 
 GITHUB_API_TOKEN:= """
     }
-    
+
     for filename, content in files_to_create.items():
         try:
             with open(filename, "x") as file:
@@ -65,5 +69,6 @@ GITHUB_API_TOKEN:= """
             print(f"Created {filename} with initial content.")
         except FileExistsError:
             print(f"{filename} already exists. Skipping creation.")
+
 
 create_clear_data_files()

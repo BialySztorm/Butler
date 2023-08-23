@@ -6,6 +6,7 @@ from Butler_lib import read_env_file
 
 EnvironmentFilePath = ".env"
 
+
 class TColors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -16,10 +17,10 @@ class TColors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
+
 OsMapping = {
     "windows": "win",
     "osx": "mac"
 }
 
 Config = read_env_file(EnvironmentFilePath)
-

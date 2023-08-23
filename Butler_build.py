@@ -1,7 +1,9 @@
-import os, shutil
+import os
+import shutil
 from Butler_constants import TColors
 
 # * Create build dir and copy needed files
+
 
 def Create():
     """
@@ -24,6 +26,7 @@ def Create():
     print(TColors.OKGREEN+"All files copied."+TColors.ENDC)
 
 # * delete build files
+
 
 def Remove():
     """
