@@ -60,9 +60,9 @@ def check_release_exists(repo_owner, repo_name, access_token, release_name, asse
     elif response.status_code == 404:
         print(TColors.WARNING+"No release found."+TColors.ENDC)
         return False
-    else:
-        print(TColors.FAIL+f"Error checking release existence: {response.status_code} - {response.text}"+TColors.ENDC)
-        return False
+
+    print(TColors.FAIL+f"Error checking release existence: {response.status_code} - {response.text}"+TColors.ENDC)
+    return False
 
 
 def upload_release_asset(repo_owner, repo_name, access_token, release_id, asset_path):
@@ -76,7 +76,6 @@ def upload_release_asset(repo_owner, repo_name, access_token, release_id, asset_
     total_size = os.path.getsize(asset_path)
     with open(asset_path, "rb") as asset_file, tqdm.wrapattr(asset_file, "read", total=total_size, unit="B", unit_scale=True, unit_divisor=1024) as asset_stream:
         response = requests.post(url, data=asset_stream, headers=headers)
-        pbar.update(total_size - pbar.n)  # Set progress to 100% at the end
     if response.status_code == 201:
         print(TColors.OKGREEN+"Asset uploaded successfully."+TColors.ENDC)
     else:

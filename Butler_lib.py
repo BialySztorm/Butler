@@ -72,3 +72,15 @@ GITHUB_API_TOKEN:= """
 
 
 create_clear_data_files()
+
+# * Data validation
+
+
+def is_version_format(string):
+    pattern = r"^\d+\.\d+\.\d+$"
+    return re.match(pattern, string) is not None
+
+
+def is_user_game_format(string):
+    pattern = r"^.+/.+$"
+    return re.match(pattern, string) is not None

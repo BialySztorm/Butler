@@ -7,6 +7,7 @@ from Butler_github import github
 from Butler_jira import jira
 from Butler_build import Create, Remove
 from Butler_constants import TColors, Config
+from Butler_lib import is_version_format, is_user_game_format
 
 # **************
 # * Version
@@ -40,7 +41,12 @@ def increment_version(current_version, index_to_change):
 def windows(currVersion, body, apps):
     # ? Itch
     if "itch.io" in apps:
-        os.system("butler.exe push windows "+Config["ITCH_SITE_NAME"]+":win --if-changed --userversion "+currVersion)
+        if not is_version_format(currVersion):
+            print(TColors.WARNING+"Wrong version format"+TColors.ENDC)
+        elif not is_user_game_format(Config["ITCH_SITE_NAME"]):
+            print(TColors.WARNING+"Wrong itch site name format"+TColors.ENDC)
+        else:
+            os.system("butler.exe push windows "+Config["ITCH_SITE_NAME"]+":win --if-changed --userversion "+currVersion)
     # ? Discord
     if "discord" in apps:
         payload = {"content": "Version: "+currVersion+" was pushed to itch on Windows channel"}
@@ -56,7 +62,12 @@ def windows(currVersion, body, apps):
 def linux(currVersion, body, apps):
     # ? Itch
     if "itch.io" in apps:
-        os.system("butler.exe push linux "+Config["ITCH_SITE_NAME"]+":linux --if-changed --userversion "+currVersion)
+        if not is_version_format(currVersion):
+            print(TColors.WARNING+"Wrong version format"+TColors.ENDC)
+        elif not is_user_game_format(Config["ITCH_SITE_NAME"]):
+            print(TColors.WARNING+"Wrong itch site name format"+TColors.ENDC)
+        else:
+            os.system("butler.exe push linux "+Config["ITCH_SITE_NAME"]+":linux --if-changed --userversion "+currVersion)
     # ? Discord
     if "discord" in apps:
         payload = {"content": "Version: "+currVersion+" was pushed to itch on Linux channel"}
@@ -72,7 +83,12 @@ def linux(currVersion, body, apps):
 def mac(currVersion, body, apps):
     # ? Itch
     if "itch.io" in apps:
-        os.system("butler push mac "+Config["ITCH_SITE_NAME"]+":mac --if-changed --userversion "+currVersion)
+        if not is_version_format(currVersion):
+            print(TColors.WARNING+"Wrong version format"+TColors.ENDC)
+        elif not is_user_game_format(Config["ITCH_SITE_NAME"]):
+            print(TColors.WARNING+"Wrong itch site name format"+TColors.ENDC)
+        else:
+            os.system("butler push mac "+Config["ITCH_SITE_NAME"]+":mac --if-changed --userversion "+currVersion)
     # ? Discord
     if "discord" in apps:
         payload = {"content": "Version: "+currVersion+" was pushed to itch on Mac channel"}
@@ -255,9 +271,8 @@ def main():
                     mac(version, body, selected_releases)
 
                 # save new version
-                f = open("Butler_version.txt", "w")
-                f.write(version)
-                f.close()
+                with open("Butler_version.txt", "w") as file:
+                    file.write(version)
 
             except Exception as e:
                 print(TColors.FAIL+"Error when uploading"+TColors.ENDC)
