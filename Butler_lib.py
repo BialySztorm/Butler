@@ -82,5 +82,5 @@ def is_version_format(string):
 
 
 def is_user_game_format(string):
-    pattern = r"^.+/.+$"
+    pattern = r"^[a-z0-9\-_]+/[a-z0-9\-_]+$"
     return re.match(pattern, string) is not None
