@@ -100,7 +100,9 @@ def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
-def display_menu(menu_options, selected_index, prefix="", suffix="", selected_indexes=[]):
+def display_menu(menu_options, selected_index, prefix="", suffix="", selected_indexes=None):
+    if selected_indexes is None:
+        selected_indexes = []
     print(TColors.BOLD+"\n")
     print("  ______              _              ")
     print(" (____  \\         _  | |             ")
