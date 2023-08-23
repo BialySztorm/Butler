@@ -1,4 +1,5 @@
 # Butler - Release helper script build with python
+[![DeepSource](https://app.deepsource.com/gh/BialySztorm/Butler.svg/?label=active+issues&show_trend=true&token=DX7v_pziLLEoUSL7Od21Wqj-)](https://app.deepsource.com/gh/BialySztorm/Butler/?ref=repository-badge)
 
 ## Installation and usage
 
