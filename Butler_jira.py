@@ -134,12 +134,12 @@ def get_latest_project_version(project_key, auth_username, auth_password, base_u
         if versions:
             latest_version = max(versions, key=lambda version: version.get("startDate"))
             return latest_version
-        else:
-            print(TColors.WARNING+"No versions found for the project."+TColors.ENDC)
-    else:
-        print(TColors.FAIL+"Failed to retrieve versions for the project."+TColors.ENDC)
-        print(TColors.WARNING+"Response:", response.text+TColors.ENDC)
-        print(TColors.WARNING+"Response code:", response.status_code+TColors.ENDC)
+        print(TColors.WARNING+"No versions found for the project."+TColors.ENDC)
+
+    print(TColors.FAIL+"Failed to retrieve versions for the project."+TColors.ENDC)
+    print(TColors.WARNING+"Response:", response.text+TColors.ENDC)
+    print(TColors.WARNING+"Response code:", response.status_code+TColors.ENDC)
+    return None
 
 # **************
 # * Main function

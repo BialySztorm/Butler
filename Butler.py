@@ -100,7 +100,7 @@ def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
-def display_menu(menu_options, selected_index, prefix="", suffix="", selected_indexes=None):
+def display_menu(menu_options, selected_index, prefix=None, suffix=None, selected_indexes=None):
     if selected_indexes is None:
         selected_indexes = []
     print(TColors.BOLD+"\n")
@@ -175,9 +175,8 @@ def main():
             menu_len = len(menu_options)
         elif selected_view == 1:
             try:
-                f = open("Butler_version.txt", "r")
-                version = f.read()
-                f.close()
+                with open("Butler_version.txt", "r") as file:
+                    version = file.read()
             except Exception as e:
                 print(TColors.FAIL+"Error occurred when trying to open Butler_version.txt"+TColors.ENDC)
                 print(TColors.WARNING+f"Exception: {e}"+TColors.ENDC)
@@ -264,7 +263,7 @@ def main():
                 print(TColors.FAIL+"Error when uploading"+TColors.ENDC)
                 print(TColors.WARNING+f"Exception: {e}"+TColors.ENDC)
 
-            wait = input("Press enter to continue...")
+            input("Press enter to continue...")
             selected_index = 0
             selected_view = 0
             selected_platform = ""

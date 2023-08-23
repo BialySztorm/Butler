@@ -125,8 +125,9 @@ def create_zip_archive(src_dirs, zip_path):
             with tqdm(total=num_files, unit=" files", position=0, leave=True) as pbar:
                 shutil.make_archive(zip_path+"-"+zip_os, "zip", src_dir)
                 pbar.update(num_files - pbar.n)
-        except:
+        except Exception as e:
             print(TColors.FAIL+f"Directory {src_dir} not exists"+TColors.ENDC)
+            print(TColors.WARNING+f"Exception: {e}"+TColors.ENDC)
             continue
         zips_paths.append(zip_path+"-"+zip_os+".zip")
         print(TColors.OKGREEN+"ZIP archive created."+TColors.ENDC)
