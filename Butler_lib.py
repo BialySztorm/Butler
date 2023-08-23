@@ -52,14 +52,14 @@ def get_repository_info():
 def create_clear_data_files():
     files_to_create = {
         "Butler_version.txt": "0.0.0",
-        ".env": """JIRA_BASE_URL:= 
-JIRA_PROJECT_KEY:= 
-JIRA_API_TOKEN:= 
-JIRA_USER:= 
-ITCH_SITE_NAME:= 
-PROJECT_NAME:= 
-DISCORD_HOOK:= 
-GITHUB_API_TOKEN:= """
+        ".env": """JIRA_BASE_URL:=None
+JIRA_PROJECT_KEY:=None
+JIRA_API_TOKEN:=None
+JIRA_USER:=None
+ITCH_SITE_NAME:=None
+PROJECT_NAME:=None
+DISCORD_HOOK:=None
+GITHUB_API_TOKEN:=None"""
     }
 
     for filename, content in files_to_create.items():
