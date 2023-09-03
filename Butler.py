@@ -85,36 +85,38 @@ class Main:
     # * Platforms
     # **************
 
-    def release(self, currVersion, body, apps, platform):
+    def release(self, body, platform):
         Config = read_env_file()
         # ? Itch
-        if "itch.io" in apps:
-            itch(currVersion, Config["ITCH_SITE_NAME"], platform)
+        if "itch.io" in self._selected_releases:
+            itch(self._version, Config["ITCH_SITE_NAME"], platform)
         # ? Discord
-        if "discord" in apps:
-            discord(currVersion, Config["DISCORD_HOOK"], platform, apps, body)
+        if "discord" in self._selected_releases:
+            discord(self._version, Config["DISCORD_HOOK"], platform, self._selected_releases, body)
         # ? Github
-        if "github" in apps:
-            github(Config["PROJECT_NAME"], currVersion, {platform}, body, True, False, None)
+        if "github" in self._selected_releases:
+            github(Config["PROJECT_NAME"], self._version, {platform}, body, True, False, None)
         # ? Jira
-        if "jira" in apps:
-            jira(currVersion, body)
+        if "jira" in self._selected_releases:
+            jira(self._version, body)
 
-    def butler(self, currVersion, body):
+    def butler(self, body):
         Config = read_env_file()
         # ? Github
         Butler_build.Create()
-        github(Config["PROJECT_NAME"], currVersion, {"Build"}, body, False, False, None)
+        github(Config["PROJECT_NAME"], self._version, {"Build"}, body, False, False, None)
         Butler_build.Remove()
 
     # **************
     # * UI
     # **************
 
-    def _clear_screen(self):
+    @staticmethod
+    def _clear_screen():
         os.system('cls' if os.name == 'nt' else 'clear')
 
-    def _display_menu(self, menu_options, selected_index, prefix=None, suffix=None, selected_indexes=None):
+    @staticmethod
+    def _display_menu(menu_options, selected_index, prefix=None, suffix=None, selected_indexes=None):
         if selected_indexes is None:
             selected_indexes = []
         print(TColors.BOLD+"\n")
@@ -168,7 +170,7 @@ class Main:
             if self._selected_view < 3:
                 key_event = keyboard.read_event(suppress=True)
                 if key_event.event_type == keyboard.KEY_DOWN:
-                    self.error = ""
+                    self._error = ""
                     if key_event.name == "w":
                         self._selected_index = (self._selected_index - 1) % menu_len
                     elif key_event.name == "s":
@@ -205,7 +207,7 @@ class Main:
                                 if self._selected_releases:
                                     self._selected_view = 3
                                 else:
-                                    error = TColors.WARNING + "\nApp not selected\n" + TColors.END
+                                    self._error = TColors.WARNING + "\nApp not selected\n" + TColors.END
                             else:
                                 if selected_option in self._selected_releases:
                                     self._selected_releases.remove(selected_option)
@@ -217,13 +219,13 @@ class Main:
 
                 try:
                     if self._selected_platform == "Butler":
-                        self.butler(self._version, body)
+                        self.butler(body)
                     elif self._selected_platform in {"Windows", "Linux", "Mac"}:
-                        self.release(self._version, body, self._selected_releases, self._selected_platform)
+                        self.release(body, self._selected_platform)
                     elif self._selected_platform == "All at once":
-                        self.release(self._version, body, self._selected_releases, "Windows")
-                        self.release(self._version, body, self._selected_releases, "Linux")
-                        self.release(self._version, body, self._selected_releases, "Mac")
+                        self.release(body, "Windows")
+                        self.release(body, "Linux")
+                        self.release(body, "Mac")
 
                     # save new version
                     with open("Butler_version.txt", "w") as file:
