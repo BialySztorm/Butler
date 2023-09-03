@@ -2,9 +2,9 @@ import os
 import sys
 import keyboard
 import re
+import Butler_build
 from Butler_github import github
 from Butler_jira import jira
-from Butler_build import Create, Remove
 from Butler_lib import itch, discord, TColors, read_env_file
 
 
@@ -57,7 +57,6 @@ class Main:
         self._selected_platform = ""
         self._selected_version = ""
         self._selected_releases = []
-        self._error = ""
         self._version = ""
 
     # **************
@@ -104,9 +103,9 @@ class Main:
     def butler(self, currVersion, body):
         Config = read_env_file()
         # ? Github
-        Create()
+        Butler_build.Create()
         github(Config["PROJECT_NAME"], currVersion, {"Build"}, body, False, False, None)
-        Remove()
+        Butler_build.Remove()
 
     # **************
     # * UI
