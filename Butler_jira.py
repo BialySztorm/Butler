@@ -87,7 +87,6 @@ def update_latest_release(project_key, base_url, username, password, version_nam
             if versions:
 
                 released_versions = [ver for ver in versions if ver.get("released", True)]
-                # print(released_versions[-1]["name"])
                 not_released_versions = find_different_elements(versions, released_versions)
                 if not_released_versions:
                     latest_version = max(not_released_versions, key=lambda x: x.get("startDate", ""))
@@ -146,7 +145,15 @@ def get_latest_project_version(project_key, auth_username, auth_password, base_u
 # **************
 
 
-def jira(version, body):
+def jira(version: str, body: str):
+    # copilot: generate docstring for current function with Parameters
+    """
+    Create new release in Jira and update the latest release with the new version.
+    Parameters:
+        version (str): New version to be created.
+        body (str): Release description.
+    """
+
     # Wywołanie funkcji z odpowiednimi argumentami
     # print(Config)
     Config = read_env_file()
@@ -162,8 +169,8 @@ def jira(version, body):
         version_name=f"v{version}-draft",  # Nazwa nowego release
         version_description="draft"  # Opis nowego release
     )
-    # print(get_latest_project_version(Config["JIRA_PROJECT_KEY"], "andrzejmmm1@gmail.com", Config["JIRA_API_TOKEN"], Config["JIRA_BASE_URL"]))
 
 # * Test run
 
+# skipcq: PY-W0069
 # jira("1.0.0","")

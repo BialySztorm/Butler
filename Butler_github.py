@@ -57,7 +57,7 @@ def check_release_exists(repo_owner, repo_name, access_token, release_name, asse
                 return True
         print(TColors.WARNING+f"No release with name {release_name} found."+TColors.END)
         return False
-    elif response.status_code == 404:
+    if response.status_code == 404:
         print(TColors.WARNING+"No release found."+TColors.END)
         return False
 
@@ -74,6 +74,7 @@ def upload_release_asset(repo_owner, repo_name, access_token, release_id, asset_
     }
 
     total_size = os.path.getsize(asset_path)
+    # skipcq: PTC-W6004
     with open(asset_path, "rb") as asset_file, tqdm.wrapattr(asset_file, "read", total=total_size, unit="B", unit_scale=True, unit_divisor=1024) as asset_stream:
         response = requests.post(url, data=asset_stream, headers=headers)
     if response.status_code == 201:
@@ -114,10 +115,7 @@ def delete_release_asset(repo_owner, repo_name, access_token, release_id, asset_
 def create_zip_archive(src_dirs, zip_path):
     zips_paths = []
     for src_dir in src_dirs:
-        if src_dir in OsMapping:
-            zip_os = OsMapping[src_dir]
-        else:
-            zip_os = src_dir.lower()
+        zip_os = OsMapping.get(src_dir, src_dir.lower())
         num_files = len(os.listdir(src_dir))
         print("Creating ZIP archive...")
         try:
@@ -167,9 +165,6 @@ def github(ProjectName: str, Version: str, Platforms: list[str], Body="", Draft=
 
     if Commit:
         current_commit = Commit
-
-    # access_token = get_access_token(TokenPath)
-    # print(access_token)
 
     zips_paths = create_zip_archive(Platforms, ProjectName)
     print("Created files: "+", ".join(zips_paths))

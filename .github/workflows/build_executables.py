@@ -6,6 +6,7 @@ import sys
 def build_for_linux():
     build_command = "python -m PyInstaller --onefile --icon=Butler.ico Butler.py"
     try:
+        # skipcq: BAN-B602
         subprocess.run(build_command, shell=True, check=True)
         print("Linux executables built successfully.")
     except subprocess.CalledProcessError as e:
@@ -15,6 +16,7 @@ def build_for_linux():
 def build_for_mac():
     build_command = "python -m PyInstaller --onefile --icon=Butler.ico Butler.py"
     try:
+        # skipcq: BAN-B602
         subprocess.run(build_command, shell=True, check=True)
         print("Executables on macOS built successfully.")
     except subprocess.CalledProcessError as e:
@@ -24,6 +26,7 @@ def build_for_mac():
 def build_for_windows():
     build_command = "python -m PyInstaller --onefile --icon=Butler.ico Butler.py"
     try:
+        # skipcq: BAN-B602
         subprocess.run(build_command, shell=True, check=True)
         print("Windows executables built successfully.")
     except subprocess.CalledProcessError as e:

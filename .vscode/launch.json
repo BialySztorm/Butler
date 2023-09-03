@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: bieżący plik",
+            "name": "Python: Current File",
             "type": "python",
             "request": "launch",
             "program": "${file}",
@@ -13,11 +13,29 @@
             "justMyCode": true
         },
         {
-            "name": "Python: Current File (External Terminal)",
+            "name": "Python: Main function file",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
-            "console": "externalTerminal"
+            "program": "Butler.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: Main function file (External Terminal)",
+            "type": "python",
+            "request": "launch",
+            "program": "Butler.py",
+            "console": "externalTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Python: Main function file in dev mode(External Terminal)",
+            "type": "python",
+            "request": "launch",
+            "program": "Butler.py",
+            "console": "externalTerminal",
+            "justMyCode": true,
+            "args": ["arg1", "arg2"]
         }
     ]
 }

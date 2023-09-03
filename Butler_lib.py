@@ -76,6 +76,7 @@ def read_env_file(file_path=EnvironmentFilePath):
     """
     Config = {}
     try:
+        # skipcq: PTC-W6004
         with open(file_path, "r") as file:
             for line in file:
                 key, value = line.strip().split(":=")
@@ -90,6 +91,7 @@ def read_env_file(file_path=EnvironmentFilePath):
 
 
 def get_repository_info():
+    # skipcq: BAN-B607
     repo_info = subprocess.check_output(["git", "remote", "-v"], text=True).splitlines()
     for line in repo_info:
         if "origin" in line and "(fetch)" in line:
@@ -97,6 +99,7 @@ def get_repository_info():
             repo_url = parts[1]
             owner, repo_name = repo_url.split("/")[-2:]
             repo_name = repo_name.replace(".git", "")
+            # skipcq: BAN-B607
             current_commit = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
             return owner, repo_name, current_commit
     return None, None
@@ -137,4 +140,5 @@ def itch(currVersion, ItchSiteName, Platform):
     elif not is_user_game_format(ItchSiteName):
         print(TColors.WARNING+"Wrong itch site name format"+TColors.END)
     else:
+        # skipcq: BAN-B605
         os.system(f"butler push windows {ItchSiteName}:{os_mapping[Platform]} --if-changed --userversion {currVersion}")

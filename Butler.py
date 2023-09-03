@@ -168,7 +168,7 @@ class Main:
             if self._selected_view < 3:
                 key_event = keyboard.read_event(suppress=True)
                 if key_event.event_type == keyboard.KEY_DOWN:
-                    error = ""
+                    self.error = ""
                     if key_event.name == "w":
                         self._selected_index = (self._selected_index - 1) % menu_len
                     elif key_event.name == "s":
@@ -179,38 +179,38 @@ class Main:
                         self._selected_index = (self._selected_index + 1) % menu_len
                     elif key_event.name == "enter":
                         if self._selected_view == 0:
-                            self.selected_option = self._menu_options[self._selected_index]
+                            selected_option = self._menu_options[self._selected_index]
                             self._selected_index = 0
-                            print(f"Selected: {self.selected_option}")
-                            if self.selected_option == "Exit":
+                            print(f"Selected: {selected_option}")
+                            if selected_option == "Exit":
                                 break
                             self._selected_view = 1
-                            self._selected_platform = self.selected_option
+                            self._selected_platform = selected_option
                         elif self._selected_view == 1:
-                            self.selected_option = self._version_options[self._selected_index]
+                            selected_option = self._version_options[self._selected_index]
                             self._selected_index = 0
-                            if self.selected_option == "go back":
+                            if selected_option == "go back":
                                 self._selected_view = 0
                                 self._selected_version = ""
                             else:
                                 self._selected_view = 2
-                                self._selected_version = self.selected_option
+                                self._selected_version = selected_option
                         elif self._selected_view == 2:
-                            self.selected_option = self._release_options[self._selected_index]
-                            if self.selected_option == "go back":
+                            selected_option = self._release_options[self._selected_index]
+                            if selected_option == "go back":
                                 self._selected_index = 0
                                 self._selected_view = 1
                                 self._selected_releases = []
-                            elif self.selected_option == "submit":
+                            elif selected_option == "submit":
                                 if self._selected_releases:
                                     self._selected_view = 3
                                 else:
                                     error = TColors.WARNING + "\nApp not selected\n" + TColors.END
                             else:
-                                if self.selected_option in self._selected_releases:
-                                    self._selected_releases.remove(self.selected_option)
+                                if selected_option in self._selected_releases:
+                                    self._selected_releases.remove(selected_option)
                                 else:
-                                    self._selected_releases.append(self.selected_option)
+                                    self._selected_releases.append(selected_option)
             else:
                 body = input()
                 self._increment_version(self._version_options.index(self._selected_version))

@@ -12,7 +12,7 @@ def Create():
     print("Copying files to build...")
     selected_files = {"Butler_github.py", "Butler_jira.py", "Butler.py", "Butler_lib.py", "README.md"}
 
-    # Create the build folder if it doesn't exist
+    # Create the build folder if it doesn't exist, else delete the current one and make empty
     if not os.path.exists("Build"):
         os.makedirs("Build")
     else:
