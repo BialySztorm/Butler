@@ -1,7 +1,7 @@
 import shutil
 import requests
 import os
-from Butler_constants import TColors, OsMapping, Config
+from Butler_lib import TColors, OsMapping, read_env_file
 from Butler_lib import get_repository_info
 from tqdm import tqdm
 
@@ -28,12 +28,12 @@ def create_github_release(repo_owner, repo_name, access_token, tag_name, commit,
     response = requests.post(url, json=data, headers=headers)
 
     if response.status_code == 201:
-        print(TColors.OKGREEN+"Release created successfully."+TColors.ENDC)
+        print(TColors.OK_GREEN+"Release created successfully."+TColors.END)
         if zip_paths:
             for zip_path in zip_paths:
                 upload_release_asset(repo_owner, repo_name, access_token, response.json()["id"], zip_path)
     else:
-        print(TColors.FAIL+"Failed to create release."+TColors.ENDC)
+        print(TColors.FAIL+"Failed to create release."+TColors.END)
         print(response.text)
 
 
@@ -55,13 +55,13 @@ def check_release_exists(repo_owner, repo_name, access_token, release_name, asse
                     upload_release_asset(repo_owner, repo_name, access_token, release_id, asset_file)
                 print(f"Release with name {release_name} already exist.")
                 return True
-        print(TColors.WARNING+f"No release with name {release_name} found."+TColors.ENDC)
+        print(TColors.WARNING+f"No release with name {release_name} found."+TColors.END)
         return False
     elif response.status_code == 404:
-        print(TColors.WARNING+"No release found."+TColors.ENDC)
+        print(TColors.WARNING+"No release found."+TColors.END)
         return False
 
-    print(TColors.FAIL+f"Error checking release existence: {response.status_code} - {response.text}"+TColors.ENDC)
+    print(TColors.FAIL+f"Error checking release existence: {response.status_code} - {response.text}"+TColors.END)
     return False
 
 
@@ -77,9 +77,9 @@ def upload_release_asset(repo_owner, repo_name, access_token, release_id, asset_
     with open(asset_path, "rb") as asset_file, tqdm.wrapattr(asset_file, "read", total=total_size, unit="B", unit_scale=True, unit_divisor=1024) as asset_stream:
         response = requests.post(url, data=asset_stream, headers=headers)
     if response.status_code == 201:
-        print(TColors.OKGREEN+"Asset uploaded successfully."+TColors.ENDC)
+        print(TColors.OK_GREEN+"Asset uploaded successfully."+TColors.END)
     else:
-        print(TColors.FAIL+"Failed to upload asset."+TColors.ENDC)
+        print(TColors.FAIL+"Failed to upload asset."+TColors.END)
         print(response.text)
 
 
@@ -100,22 +100,22 @@ def delete_release_asset(repo_owner, repo_name, access_token, release_id, asset_
                 delete_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/releases/assets/{asset_id}"
                 delete_response = requests.delete(delete_url, headers=headers)
                 if delete_response.status_code == 204:
-                    print(TColors.OKGREEN+f"Asset '{asset_name}' deleted successfully."+TColors.ENDC)
+                    print(TColors.OK_GREEN+f"Asset '{asset_name}' deleted successfully."+TColors.END)
                 else:
-                    print(TColors.FAIL+f"Failed to delete asset '{asset_name}'."+TColors.ENDC)
+                    print(TColors.FAIL+f"Failed to delete asset '{asset_name}'."+TColors.END)
                     print(delete_response.text)
                 return
-        print(TColors.WARNING+f"Asset '{asset_name}' not found in release."+TColors.ENDC)
+        print(TColors.WARNING+f"Asset '{asset_name}' not found in release."+TColors.END)
     else:
-        print(TColors.FAIL+"Failed to get release assets."+TColors.ENDC)
+        print(TColors.FAIL+"Failed to get release assets."+TColors.END)
         print(response.text)
 
 
 def create_zip_archive(src_dirs, zip_path):
     zips_paths = []
     for src_dir in src_dirs:
-        if src_dir.lower() in OsMapping:
-            zip_os = OsMapping[src_dir.lower()]
+        if src_dir in OsMapping:
+            zip_os = OsMapping[src_dir]
         else:
             zip_os = src_dir.lower()
         num_files = len(os.listdir(src_dir))
@@ -125,11 +125,11 @@ def create_zip_archive(src_dirs, zip_path):
                 shutil.make_archive(zip_path+"-"+zip_os, "zip", src_dir)
                 pbar.update(num_files - pbar.n)
         except Exception as e:
-            print(TColors.FAIL+f"Directory {src_dir} not exists"+TColors.ENDC)
-            print(TColors.WARNING+f"Exception: {e}"+TColors.ENDC)
+            print(TColors.FAIL+f"Directory {src_dir} not exists"+TColors.END)
+            print(TColors.WARNING+f"Exception: {e}"+TColors.END)
             continue
         zips_paths.append(zip_path+"-"+zip_os+".zip")
-        print(TColors.OKGREEN+"ZIP archive created."+TColors.ENDC)
+        print(TColors.OK_GREEN+"ZIP archive created."+TColors.END)
     return zips_paths
 
 
@@ -137,16 +137,16 @@ def delete_zip_archive(src_dirs):
     for file_path in src_dirs:
         if os.path.exists(file_path):
             os.remove(file_path)
-            print(TColors.OKGREEN+f"File {file_path} has been removed."+TColors.ENDC)
+            print(TColors.OK_GREEN+f"File {file_path} has been removed."+TColors.END)
         else:
-            print(TColors.WARNING+f"File {file_path} does not exist."+TColors.ENDC)
+            print(TColors.WARNING+f"File {file_path} does not exist."+TColors.END)
 
 
 # **************
 # * Main function
 # **************
 
-def github(ProjectName: str, Version: str, Platforms: list[str], Body="", Draft=True, Prerelease=False, Commit: str = None, access_token=Config["GITHUB_API_TOKEN"]):
+def github(ProjectName: str, Version: str, Platforms: list[str], Body="", Draft=True, Prerelease=False, Commit: str = None, access_token=read_env_file()["GITHUB_API_TOKEN"]):
     """
     Manage github releases.
 
@@ -162,7 +162,7 @@ def github(ProjectName: str, Version: str, Platforms: list[str], Body="", Draft=
     """
     repo_owner, repo_name, current_commit = get_repository_info()
     if not repo_owner or not repo_name:
-        print(TColors.FAIL+"Failed to get repository information."+TColors.ENDC)
+        print(TColors.FAIL+"Failed to get repository information."+TColors.END)
         return
 
     if Commit:
@@ -177,7 +177,7 @@ def github(ProjectName: str, Version: str, Platforms: list[str], Body="", Draft=
         create_github_release(repo_owner, repo_name, access_token, "v"+Version, current_commit, "v"+Version, Body, zips_paths, Draft, Prerelease)
     print("Tidying up...")
     delete_zip_archive(zips_paths)
-    print(TColors.OKGREEN+"Github stuff is Done!"+TColors.ENDC)
+    print(TColors.OK_GREEN+"Github stuff is Done!"+TColors.END)
 
 
 # * Test run

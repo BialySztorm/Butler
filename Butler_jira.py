@@ -2,7 +2,7 @@ import requests
 import locale
 from requests.auth import HTTPBasicAuth
 from datetime import datetime
-from Butler_constants import TColors, Config
+from Butler_lib import TColors, read_env_file
 
 # **************
 # * Subprocesses
@@ -67,11 +67,11 @@ def create_jira_version(base_url, project_key, api_token, version_name, version_
     response = requests.post(url, json=payload, headers=headers, auth=auth)
 
     if response.status_code == 201:
-        print(TColors.OKGREEN+"Version created successfully in Jira."+TColors.ENDC)
+        print(TColors.OK_GREEN+"Version created successfully in Jira."+TColors.END)
     else:
-        print(TColors.FAIL+"Failed to create new version in Jira."+TColors.ENDC)
-        print(TColors.WARNING+"Response:", response.text+TColors.ENDC)
-        print(TColors.WARNING+"Response code:", response.status_code+TColors.ENDC)
+        print(TColors.FAIL+"Failed to create new version in Jira."+TColors.END)
+        print(TColors.WARNING+"Response:", response.text+TColors.END)
+        print(TColors.WARNING+"Response code:", response.status_code+TColors.END)
 
 
 def update_latest_release(project_key, base_url, username, password, version_name, release_date, version_description, released=False):
@@ -104,19 +104,19 @@ def update_latest_release(project_key, base_url, username, password, version_nam
 
                     update_response = requests.put(update_url, json=data, headers=headers, auth=auth)
                     if update_response.status_code == 200:
-                        print(TColors.OKGREEN+"Latest version updated successfully."+TColors.ENDC)
+                        print(TColors.OK_GREEN+"Latest version updated successfully."+TColors.END)
                     else:
-                        print(TColors.FAIL+"Failed to update latest version."+TColors.ENDC)
-                        print(TColors.WARNING+"Response:", update_response.text+TColors.ENDC)
+                        print(TColors.FAIL+"Failed to update latest version."+TColors.END)
+                        print(TColors.WARNING+"Response:", update_response.text+TColors.END)
                 else:
-                    print(TColors.WARNING+"No released versions found for the project."+TColors.ENDC)
+                    print(TColors.WARNING+"No released versions found for the project."+TColors.END)
             else:
-                print(TColors.WARNING+"No versions found for the project."+TColors.ENDC)
+                print(TColors.WARNING+"No versions found for the project."+TColors.END)
         else:
-            print(TColors.FAIL+"Failed to retrieve versions."+TColors.ENDC)
-            print(TColors.WARNING+"Response:", response.text+TColors.ENDC)
+            print(TColors.FAIL+"Failed to retrieve versions."+TColors.END)
+            print(TColors.WARNING+"Response:", response.text+TColors.END)
     except Exception as e:
-        print(TColors.FAIL+"An error occurred:", e+TColors.ENDC)
+        print(TColors.FAIL+"An error occurred:", e+TColors.END)
 
 
 def get_latest_project_version(project_key, auth_username, auth_password, base_url):
@@ -134,11 +134,11 @@ def get_latest_project_version(project_key, auth_username, auth_password, base_u
         if versions:
             latest_version = max(versions, key=lambda version: version.get("startDate"))
             return latest_version
-        print(TColors.WARNING+"No versions found for the project."+TColors.ENDC)
+        print(TColors.WARNING+"No versions found for the project."+TColors.END)
 
-    print(TColors.FAIL+"Failed to retrieve versions for the project."+TColors.ENDC)
-    print(TColors.WARNING+"Response:", response.text+TColors.ENDC)
-    print(TColors.WARNING+"Response code:", response.status_code+TColors.ENDC)
+    print(TColors.FAIL+"Failed to retrieve versions for the project."+TColors.END)
+    print(TColors.WARNING+"Response:", response.text+TColors.END)
+    print(TColors.WARNING+"Response code:", response.status_code+TColors.END)
     return None
 
 # **************
@@ -149,6 +149,7 @@ def get_latest_project_version(project_key, auth_username, auth_password, base_u
 def jira(version, body):
     # Wywołanie funkcji z odpowiednimi argumentami
     # print(Config)
+    Config = read_env_file()
 
     update_latest_release(Config["JIRA_PROJECT_KEY"], Config["JIRA_BASE_URL"], Config["JIRA_USER"], Config["JIRA_API_TOKEN"], f"v{version}", get_current_date_formatted(), body, True)
 
