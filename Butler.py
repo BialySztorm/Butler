@@ -102,9 +102,13 @@ class Main:
     def butler(self, body):
         Config = read_env_file()
         # ? Github
-        Butler_build.Create()
-        github(Config["PROJECT_NAME"], self._version, {"Build"}, body, False, False, None)
-        Butler_build.Remove()
+        if "github" in self._selected_releases:
+            Butler_build.Create()
+            github(Config["PROJECT_NAME"], self._version, {"Build"}, body, False, False, None)
+            Butler_build.Remove()
+        # ? Discord
+        if "discord" in self._selected_releases:
+            discord(self._version, Config["DISCORD_HOOK"], "Build", self._selected_releases, body)
 
     # **************
     # * UI
