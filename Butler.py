@@ -5,11 +5,11 @@ import re
 import Butler_build
 from Butler_github import github
 from Butler_jira import jira
-from Butler_lib import itch, discord, TColors, read_env_file
+from Butler_lib import itch, discord, TColors, read_env_file, create_clear_data_files
 
 
 class Main:
-
+    # Constructor method for initializing class variables
     def __init__(self):
         self._selected_index = 0
         self._selected_view = 0
@@ -51,6 +51,7 @@ class Main:
             "go back"
         ]
 
+    # Reset method to reset class variables
     def reset(self):
         self._selected_index = 0
         self._selected_view = 0
@@ -63,20 +64,16 @@ class Main:
     # * Version
     # **************
 
+    # Method to increment the version based on the index
     def _increment_version(self, index_to_change):
-        # Rozbij obecną wersję na części
         parts = self._version.split('.')
 
-        # Sprawdź, czy podany indeks jest prawidłowy
         if 0 <= index_to_change < len(parts):
-            # Zwiększ wartość na danym indeksie
             parts[index_to_change] = str(int(parts[index_to_change]) + 1)
 
-            # Wyzeruj kolejne wartości po danym indeksie
             for i in range(index_to_change + 1, len(parts)):
                 parts[i] = '0'
 
-            # Złącz części z powrotem w nową wersję
             self._version = '.'.join(parts)
         else:
             print(TColors.WARNING+f"Nr: {index_to_change} is a wrong version index"+TColors.END)
@@ -85,6 +82,7 @@ class Main:
     # * Platforms
     # **************
 
+    # Method to release a version with the specified body and platform
     def release(self, body, platform):
         Config = read_env_file()
         # ? Itch
@@ -100,6 +98,7 @@ class Main:
         if "jira" in self._selected_releases:
             jira(self._version, body)
 
+    # Method to release a version for Butler
     def butler(self, body):
         Config = read_env_file()
         # ? Github
@@ -111,12 +110,14 @@ class Main:
     # * UI
     # **************
 
+    # Static method to clear the screen
     @staticmethod
     def _clear_screen():
         os.system('cls' if os.name == 'nt' else 'clear')
 
+    # Static method to display a menu with options
     @staticmethod
-    def _display_menu(menu_options, selected_index, prefix=None, suffix=None, selected_indexes=None):
+    def _display_menu(menu_options, selected_index, prefix: str = None, suffix: str = None, selected_indexes=None):
         if selected_indexes is None:
             selected_indexes = []
         print(TColors.BOLD+"\n")
@@ -128,6 +129,7 @@ class Main:
         print(" |______/|____/   \\__)\\_)_____)_|    ")
         print("                        by WhiteStorm")
         print(f"{TColors.END}\n\n{TColors.HEADER}{prefix}{TColors.END}\n")
+        # Display menu options with formatting based on selection and indices
         for index, option in enumerate(menu_options):
             if option in selected_indexes:
                 print(TColors.OK_BLUE, end="")
@@ -142,31 +144,40 @@ class Main:
     # * Main loop
     # **************
 
+    # Main loop of the program
     def MainLoop(self):
 
         while True:
+            # Clear the screen
             self._clear_screen()
+            # Display menu based on the selected view
             if self._selected_view == 0:
+                # Display platform selection menu
                 self._display_menu(self._menu_options, self._selected_index, prefix="Select platform to release on:", suffix=self._error)
                 menu_len = len(self._menu_options)
             elif self._selected_view == 1:
                 try:
+                    # Read the current version from 'Butler_version.txt' file
                     with open("Butler_version.txt", "r") as file:
                         self._version = file.read()
                 except Exception as e:
                     print(TColors.FAIL+"Error occurred when trying to open Butler_version.txt"+TColors.END)
                     print(TColors.WARNING+f"Exception: {e}"+TColors.END)
                     sys.exit(int(re.search(r'\[Errno (\d+)\]', str(e)).group(1)))
+                # Display version selection menu
                 self._display_menu(self._version_options, self._selected_index, prefix="Current Version is: v"+self._version, suffix=self._error+f"\nSelected platform: {self._selected_platform}")
                 menu_len = len(self._version_options)
             elif self._selected_view == 2:
+                # Display app release options menu
                 self._display_menu(self._release_options, self._selected_index, prefix="Select app you wanna release to:", suffix=self._error +
                                    f"\nSelected platform: {self._selected_platform}, Selected version operation: {self._selected_version}", selected_indexes=self._selected_releases)
                 menu_len = len(self._release_options)
             elif self._selected_view == 3:
+                # Display description input menu
                 self._display_menu([], 0, suffix="Type description you wanna parse to release:", prefix=self._error +
                                    f"\nSelected platform: {self._selected_platform}, Selected version operation: {self._selected_version}")
 
+            # Handle user input for menu navigation
             if self._selected_view < 3:
                 key_event = keyboard.read_event(suppress=True)
                 if key_event.event_type == keyboard.KEY_DOWN:
@@ -181,6 +192,7 @@ class Main:
                         self._selected_index = (self._selected_index + 1) % menu_len
                     elif key_event.name == "enter":
                         if self._selected_view == 0:
+                            # Process platform selection
                             selected_option = self._menu_options[self._selected_index]
                             self._selected_index = 0
                             print(f"Selected: {selected_option}")
@@ -189,6 +201,7 @@ class Main:
                             self._selected_view = 1
                             self._selected_platform = selected_option
                         elif self._selected_view == 1:
+                            # Process version selection
                             selected_option = self._version_options[self._selected_index]
                             self._selected_index = 0
                             if selected_option == "go back":
@@ -198,6 +211,7 @@ class Main:
                                 self._selected_view = 2
                                 self._selected_version = selected_option
                         elif self._selected_view == 2:
+                            # Process app release selection
                             selected_option = self._release_options[self._selected_index]
                             if selected_option == "go back":
                                 self._selected_index = 0
@@ -214,10 +228,12 @@ class Main:
                                 else:
                                     self._selected_releases.append(selected_option)
             else:
+                # Input and process description for release
                 body = input()
                 self._increment_version(self._version_options.index(self._selected_version))
 
                 try:
+                    # Release based on platform and version
                     if self._selected_platform == "Butler":
                         self.butler(body)
                     elif self._selected_platform in {"Windows", "Linux", "Mac"}:
@@ -227,7 +243,7 @@ class Main:
                         self.release(body, "Linux")
                         self.release(body, "Mac")
 
-                    # save new version
+                    # Save the new version to 'Butler_version.txt' file
                     with open("Butler_version.txt", "w") as file:
                         file.write(self._version)
 
@@ -239,6 +255,8 @@ class Main:
                 self.reset()
 
 
+# Entry point of the script
 if __name__ == "__main__":
+    create_clear_data_files()
     obj = Main()
     obj.MainLoop()

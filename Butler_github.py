@@ -10,13 +10,16 @@ from tqdm import tqdm
 # * Subprocesses
 # **************
 
+# Function to create a GitHub release
 def create_github_release(repo_owner, repo_name, access_token, tag_name, commit, name, body, zip_paths=None, draft=True, prerelease=False):
     print("Creating release...")
+    # Define the URL and headers for the GitHub API request
     url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/releases"
     headers = {
         "Authorization": f"token {access_token}",
         "Accept": "application/vnd.github.v3+json"
     }
+    # Prepare data for the release request
     data = {
         "tag_name": tag_name,
         "target_commitish": commit,
@@ -25,8 +28,10 @@ def create_github_release(repo_owner, repo_name, access_token, tag_name, commit,
         "draft": draft,
         "prerelease": prerelease
     }
+    # Send a POST request to create the release
     response = requests.post(url, json=data, headers=headers)
 
+    # Check the response status code and handle accordingly
     if response.status_code == 201:
         print(TColors.OK_GREEN+"Release created successfully."+TColors.END)
         if zip_paths:
@@ -37,14 +42,17 @@ def create_github_release(repo_owner, repo_name, access_token, tag_name, commit,
         print(response.text)
 
 
+# Function to check if a release with the same name exists
 def check_release_exists(repo_owner, repo_name, access_token, release_name, asset_files):
+    # Define the URL and headers for the GitHub API request
     url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/releases"
     headers = {
         "Authorization": f"token {access_token}"
     }
-
+    # Send a GET request to retrieve existing releases
     response = requests.get(url, headers=headers)
 
+    # Check the response status code and handle accordingly
     if response.status_code == 200:
         releases = response.json()
         for release in releases:
@@ -65,18 +73,22 @@ def check_release_exists(repo_owner, repo_name, access_token, release_name, asse
     return False
 
 
+# Function to upload a release asset to GitHub
 def upload_release_asset(repo_owner, repo_name, access_token, release_id, asset_path):
     print(f"Uploading {asset_path}...")
+    # Define the URL and headers for uploading the release asset
     url = f"https://uploads.github.com/repos/{repo_owner}/{repo_name}/releases/{release_id}/assets?name={os.path.basename(asset_path)}"
     headers = {
         "Authorization": f"token {access_token}",
         "Content-Type": "application/zip"
     }
-
+    # Get the total size of the asset for progress tracking
     total_size = os.path.getsize(asset_path)
+    # Open and upload the asset file with progress tracking
     # skipcq: PTC-W6004
     with open(asset_path, "rb") as asset_file, tqdm.wrapattr(asset_file, "read", total=total_size, unit="B", unit_scale=True, unit_divisor=1024) as asset_stream:
         response = requests.post(url, data=asset_stream, headers=headers)
+    # Check the response status code and handle accordingly
     if response.status_code == 201:
         print(TColors.OK_GREEN+"Asset uploaded successfully."+TColors.END)
     else:
@@ -84,15 +96,17 @@ def upload_release_asset(repo_owner, repo_name, access_token, release_id, asset_
         print(response.text)
 
 
+# Function to delete a release asset if it exists
 def delete_release_asset(repo_owner, repo_name, access_token, release_id, asset_name):
     print("Deleting duplicated asset (if exists)...")
+    # Define the URL and headers for deleting a release asset
     url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/releases/{release_id}/assets"
     headers = {
         "Authorization": f"token {access_token}"
     }
-
+    # Send a GET request to retrieve existing release assets
     response = requests.get(url, headers=headers)
-
+    # Check the response status code and handle accordingly
     if response.status_code == 200:
         assets = response.json()
         for asset in assets:
@@ -112,6 +126,7 @@ def delete_release_asset(repo_owner, repo_name, access_token, release_id, asset_
         print(response.text)
 
 
+# Function to create a ZIP archive from specified source directories
 def create_zip_archive(src_dirs, zip_path):
     zips_paths = []
     for src_dir in src_dirs:
@@ -131,6 +146,7 @@ def create_zip_archive(src_dirs, zip_path):
     return zips_paths
 
 
+# Function to delete ZIP archives
 def delete_zip_archive(src_dirs):
     for file_path in src_dirs:
         if os.path.exists(file_path):

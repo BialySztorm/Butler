@@ -3,6 +3,7 @@ import platform
 import sys
 
 
+# Function to build executables for Linux
 def build_for_linux():
     build_command = "python -m PyInstaller --onefile --icon=Butler.ico Butler.py"
     try:
@@ -13,6 +14,7 @@ def build_for_linux():
         print(f"Error building executables on Linux: {e}")
 
 
+# Function to build executables for macOS
 def build_for_mac():
     build_command = "python -m PyInstaller --onefile --icon=Butler.ico Butler.py"
     try:
@@ -23,6 +25,7 @@ def build_for_mac():
         print(f"Error building executables on macOS: {e}")
 
 
+# Function to build executables for Windows
 def build_for_windows():
     build_command = "python -m PyInstaller --onefile --icon=Butler.ico Butler.py"
     try:
@@ -33,8 +36,9 @@ def build_for_windows():
         print(f"Error building executables on Windows: {e}")
 
 
-# Wybór odpowiedniej sekcji w zależności od systemu
+# Determine the operating system
 system = platform.system()
+# Choose the appropriate build function based on the detected operating system
 if system == "Linux":
     build_for_linux()
 elif system == "Darwin":

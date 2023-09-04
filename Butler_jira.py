@@ -9,16 +9,18 @@ from Butler_lib import TColors, read_env_file
 # **************
 
 
+# Function to get the current date in a formatted string
 def get_current_date_formatted():
     current_date = datetime.now()
 
-    # Ustawienie języka i lokalizacji na język urządzenia
+    # Set the language and locale to match the device's settings
     locale.setlocale(locale.LC_TIME, "")
 
     formatted_date = current_date.strftime("%d/%b/%Y")
     return formatted_date
 
 
+# Function to increment a version string (e.g., from X.Y.Z to X.Y.Z+1)
 def increment_version(version_string):
     try:
         major, minor, patch = map(int, version_string.split('.'))
@@ -30,6 +32,7 @@ def increment_version(version_string):
         return None
 
 
+# Function to find different elements between two lists
 def find_different_elements(list1, list2):
     unique_elements = []
 
@@ -44,11 +47,12 @@ def find_different_elements(list1, list2):
     return unique_elements
 
 
-def create_jira_version(base_url, project_key, api_token, version_name, version_description):
+# Function to create a new Jira version
+def create_jira_version(base_url, project_key, username, api_token, version_name, version_description):
     print("Creating new jira release")
     date = get_current_date_formatted()
     # print(date)
-
+    # Creating the URL for the Jira version resource
     url = f"{base_url}/rest/api/2/version"
     payload = {
         "name": version_name,
@@ -58,12 +62,12 @@ def create_jira_version(base_url, project_key, api_token, version_name, version_
         "archived": False,
         "released": False
     }
-
-    auth = HTTPBasicAuth("andrzejmmm1@gmail.com", api_token)
+    # Creating authentication using an API token
+    auth = HTTPBasicAuth(username, api_token)
     headers = {
         "Content-Type": "application/json"
     }
-
+    # Sending a POST request to create a new version in Jira
     response = requests.post(url, json=payload, headers=headers, auth=auth)
 
     if response.status_code == 201:
@@ -74,11 +78,14 @@ def create_jira_version(base_url, project_key, api_token, version_name, version_
         print(TColors.WARNING+"Response code:", response.status_code+TColors.END)
 
 
+# Function to update the latest Jira release
 def update_latest_release(project_key, base_url, username, password, version_name, release_date, version_description, released=False):
     print("Updating latest jira release")
     try:
+        # Construct the URL to retrieve project versions from Jira
         versions_url = f"{base_url}/rest/api/2/project/{project_key}/versions"
         auth = HTTPBasicAuth(username, password)
+        # Send a GET request to retrieve project versions
         response = requests.get(versions_url, auth=auth)
 
         if response.status_code == 200:
@@ -91,7 +98,7 @@ def update_latest_release(project_key, base_url, username, password, version_nam
                 if not_released_versions:
                     latest_version = max(not_released_versions, key=lambda x: x.get("startDate", ""))
                     latest_version_id = latest_version["id"]
-
+                    # Construct the URL to update the latest version
                     update_url = f"{base_url}/rest/api/2/version/{latest_version_id}"
                     headers = {"Content-Type": "application/json"}
                     data = {
@@ -100,7 +107,7 @@ def update_latest_release(project_key, base_url, username, password, version_nam
                         "description": version_description,
                         "userReleaseDate": release_date
                     }
-
+                    # Send a PUT request to update the latest version
                     update_response = requests.put(update_url, json=data, headers=headers, auth=auth)
                     if update_response.status_code == 200:
                         print(TColors.OK_GREEN+"Latest version updated successfully."+TColors.END)
@@ -118,19 +125,22 @@ def update_latest_release(project_key, base_url, username, password, version_nam
         print(TColors.FAIL+"An error occurred:", e+TColors.END)
 
 
+# Function to get the latest project version from Jira
 def get_latest_project_version(project_key, auth_username, auth_password, base_url):
+    # Construct the URL to retrieve project versions from Jira
     url = f"{base_url}/rest/api/2/project/{project_key}/versions"
 
     auth = HTTPBasicAuth(auth_username, auth_password)
     headers = {
         "Content-Type": "application/json"
     }
-
+    # Send a GET request to retrieve project versions
     response = requests.get(url, headers=headers, auth=auth)
 
     if response.status_code == 200:
         versions = response.json()
         if versions:
+            # Find the latest version based on the start date
             latest_version = max(versions, key=lambda version: version.get("startDate"))
             return latest_version
         print(TColors.WARNING+"No versions found for the project."+TColors.END)
@@ -146,7 +156,6 @@ def get_latest_project_version(project_key, auth_username, auth_password, base_u
 
 
 def jira(version: str, body: str):
-    # copilot: generate docstring for current function with Parameters
     """
     Create new release in Jira and update the latest release with the new version.
     Parameters:
@@ -154,8 +163,6 @@ def jira(version: str, body: str):
         body (str): Release description.
     """
 
-    # Wywołanie funkcji z odpowiednimi argumentami
-    # print(Config)
     Config = read_env_file()
 
     update_latest_release(Config["JIRA_PROJECT_KEY"], Config["JIRA_BASE_URL"], Config["JIRA_USER"], Config["JIRA_API_TOKEN"], f"v{version}", get_current_date_formatted(), body, True)
@@ -163,14 +170,14 @@ def jira(version: str, body: str):
     version = increment_version(version)
 
     create_jira_version(
-        base_url=Config["JIRA_BASE_URL"],  # Zastąp adresem swojej instancji Jira
-        project_key=Config["JIRA_PROJECT_KEY"],  # Zastąp kluczem swojego projektu w Jira
-        api_token=Config["JIRA_API_TOKEN"],  # Twój osobisty token dostępu do API Jira
-        version_name=f"v{version}-draft",  # Nazwa nowego release
-        version_description="draft"  # Opis nowego release
+        base_url=Config["JIRA_BASE_URL"],
+        project_key=Config["JIRA_PROJECT_KEY"],
+        username=Config["JIRA_USER"],
+        api_token=Config["JIRA_API_TOKEN"],
+        version_name=f"v{version}-draft",
+        version_description="draft"
     )
 
-# * Test run
 
-# skipcq: PY-W0069
+# * Test run
 # jira("1.0.0","")

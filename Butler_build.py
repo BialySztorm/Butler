@@ -2,9 +2,8 @@ import os
 import shutil
 from Butler_lib import TColors
 
+
 # * Create build dir and copy needed files
-
-
 def Create():
     """
     Copy selected files to the specified build folder.
@@ -25,9 +24,8 @@ def Create():
         shutil.copy(file_path, destination_path)
     print(TColors.OK_GREEN+"All files copied."+TColors.END)
 
+
 # * delete build files
-
-
 def Remove():
     """
     Remove the specified build folder and its contents.

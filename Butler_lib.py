@@ -32,8 +32,8 @@ OsMapping = {
 # * Functions
 # **************
 
-# * Creating files
 
+# * Creating files
 
 def create_clear_data_files():
     files_to_create = {
@@ -59,10 +59,7 @@ def create_clear_data_files():
             print(f"{filename} already exists. Skipping creation.")
 
 
-create_clear_data_files()
-
 # * Reading env file
-
 
 def read_env_file(file_path=EnvironmentFilePath):
     """
@@ -87,8 +84,8 @@ def read_env_file(file_path=EnvironmentFilePath):
         sys.exit(int(re.search(r'\[Errno (\d+)\]', str(e)).group(1)))
     return Config
 
-# * Reading repository info
 
+# * Reading repository info
 
 def get_repository_info():
     # skipcq: BAN-B607
@@ -104,8 +101,8 @@ def get_repository_info():
             return owner, repo_name, current_commit
     return None, None
 
-# * Data validation
 
+# * Data validation
 
 def is_version_format(string):
     pattern = r"^\d+\.\d+\.\d+$"
@@ -116,8 +113,8 @@ def is_user_game_format(string):
     pattern = r"^[a-z0-9\-_]+/[a-z0-9\-_]+$"
     return re.match(pattern, string) is not None
 
-# * Other platforms release
 
+# * Other platforms release
 
 def discord(currVersion, DiscordHook, Platform, Apps, Body):
     try:
