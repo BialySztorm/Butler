@@ -36,6 +36,13 @@
             "console": "externalTerminal",
             "justMyCode": true,
             "args": ["arg1", "arg2"]
+        },
+        {
+            "name": "Python: Build release",
+            "type": "python",
+            "request": "launch",
+            "program": ".github/workflows/build_executables.py",
+            "console": "integratedTerminal"
         }
     ]
 }

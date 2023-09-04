@@ -59,8 +59,10 @@ def create_clear_data_files():
             print(f"{filename} already exists. Skipping creation.")
 
 
-# * Reading env file
+create_clear_data_files()
 
+
+# * Reading env file
 def read_env_file(file_path=EnvironmentFilePath):
     """
     Read the environment file and return its contents as a dictionary.
@@ -79,8 +81,8 @@ def read_env_file(file_path=EnvironmentFilePath):
                 key, value = line.strip().split(":=")
                 Config[key] = value
     except Exception as e:
-        print(TColors.FAIL+"Error occurred when trying to open .env"+TColors.ENDC)
-        print(TColors.WARNING+f"Exception: {e}"+TColors.ENDC)
+        print(TColors.FAIL+"Error occurred when trying to open .env"+TColors.END)
+        print(TColors.WARNING+f"Exception: {e}"+TColors.END)
         sys.exit(int(re.search(r'\[Errno (\d+)\]', str(e)).group(1)))
     return Config
 

@@ -5,7 +5,7 @@ import re
 import Butler_build
 from Butler_github import github
 from Butler_jira import jira
-from Butler_lib import itch, discord, TColors, read_env_file, create_clear_data_files
+from Butler_lib import itch, discord, TColors, read_env_file
 
 
 class Main:
@@ -261,6 +261,5 @@ class Main:
 
 # Entry point of the script
 if __name__ == "__main__":
-    create_clear_data_files()
     obj = Main()
     obj.MainLoop()
