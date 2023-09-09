@@ -140,4 +140,4 @@ def itch(currVersion, ItchSiteName, Platform):
         print(TColors.WARNING+"Wrong itch site name format"+TColors.END)
     else:
         # skipcq: BAN-B605
-        os.system(f"butler push windows {ItchSiteName}:{os_mapping[Platform]} --if-changed --userversion {currVersion}")
+        os.system(f"butler push {Platform} {ItchSiteName}:{os_mapping[Platform]} --if-changed --userversion {currVersion}")
