@@ -128,7 +128,7 @@ def discord(currVersion, DiscordHook, Platform, Apps, Body):
         print(TColors.WARNING+f"Exception: {e}"+TColors.END)
 
 
-def itch(currVersion, ItchSiteName, Platform):
+def itch(currVersion, ItchSiteName, Platform, Directory=None):
     os_mapping = {
         "Windows": "win",
         "Linux": "linux",
@@ -140,4 +140,4 @@ def itch(currVersion, ItchSiteName, Platform):
         print(TColors.WARNING+"Wrong itch site name format"+TColors.END)
     else:
         # skipcq: BAN-B605
-        os.system(f"butler push {Platform} {ItchSiteName}:{os_mapping[Platform]} --if-changed --userversion {currVersion}")
+        os.system(f"butler push {Directory+Platform} {ItchSiteName}:{os_mapping[Platform]} --if-changed --userversion {currVersion}")

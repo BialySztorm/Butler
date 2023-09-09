@@ -3,7 +3,7 @@ import sys
 import keyboard
 import re
 import Butler_build
-from Butler_github import github
+from Butler_github import github, download_files_from_latest_release
 from Butler_jira import jira
 from Butler_lib import itch, discord, TColors, read_env_file
 
@@ -109,6 +109,13 @@ class Main:
         # ? Discord
         if "discord" in self._selected_releases:
             discord(self._version, Config["DISCORD_HOOK"], "Build", self._selected_releases, body)
+        # ? Itch
+        if "itch.io" in self._selected_releases:
+            download_files_from_latest_release(["Butler-win.exe", "Butler-mac", "Butler-linux"], Config["GITHUB_API_TOKEN"])
+            itch(self._version, Config["ITCH_SITE_NAME"], "Windows", "Build/")
+            itch(self._version, Config["ITCH_SITE_NAME"], "Mac", "Build/")
+            itch(self._version, Config["ITCH_SITE_NAME"], "Linux", "Build/")
+            Butler_build.Remove()
 
     # **************
     # * UI

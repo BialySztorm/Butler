@@ -191,5 +191,72 @@ def github(ProjectName: str, Version: str, Platforms: list[str], Body="", Draft=
     print(TColors.OK_GREEN+"Github stuff is Done!"+TColors.END)
 
 
+def download_files_from_latest_release(selected_files: list[str], access_token: str = None):
+    """
+    Download files from the latest release.
+
+    Parameters:
+        selected_files (list(str)): List of files to download
+        access_token (str): GitHub access token
+    """
+    # Get repository information
+    repo_owner, repo_name, current_commit = get_repository_info()
+    if not repo_owner or not repo_name:
+        print(TColors.FAIL+"Failed to get repository information."+TColors.END)
+        return
+    # Get the latest release information
+    releases_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/releases/latest"
+    headers = {
+        "Accept": "application/vnd.github.v3+json"
+    }
+    # Add the access token to the headers if it exists and get response
+    if access_token:
+        headers["Authorization"] = f"token {access_token}"
+    response = requests.get(releases_url, headers=headers)
+
+    if response.status_code != 200:
+        print(TColors.FAIL+f"Failed to fetch the latest release information."+TColors.END)
+        print(TColors.WARNING+f" Status code: {response.status_code}"+TColors.END)
+        return
+    # Get the assets from the response
+    assets = response.json().get("assets", [])
+    # Download the selected files
+    for asset in assets:
+        file_name = asset["name"]
+        if file_name in selected_files:
+            # Determine the destination directory based on the file name
+            if "win" in file_name.lower():
+                destination_dir = "Build/Windows"
+            elif "linux" in file_name.lower():
+                destination_dir = "Build/Linux"
+            elif "mac" in file_name.lower():
+                destination_dir = "Build/Mac"
+            else:
+                destination_dir = "Build/Other"
+            download_path = os.path.join(destination_dir, file_name)
+            print(f"Downloading {file_name} to {download_path}")
+            # Download the file with progress tracking
+            try:
+                with requests.get(asset["browser_download_url"], stream=True) as response:
+                    response.raise_for_status()
+                    total_size = int(response.headers.get('content-length', 0))
+                    os.makedirs(destination_dir, exist_ok=True)
+
+                    with open(download_path, 'wb') as file, tqdm(
+                        desc=file_name,
+                        total=total_size,
+                        unit='B',
+                        unit_scale=True,
+                        unit_divisor=1024,
+                    ) as progress_bar:
+                        for data in response.iter_content(chunk_size=1024):
+                            file.write(data)
+                            progress_bar.update(len(data))
+                    print(TColors.OK_GREEN+f"Downloaded {file_name}"+TColors.END)
+            except Exception as e:
+                print(TColors.FAIL+f"Failed to download {file_name}."+TColors.END)
+                print(TColors.WARNING+f"Exception: {e}"+TColors.END)
+
+
 # * Test run
 # github("Familiada", "1.0.3", {"Windows"})
