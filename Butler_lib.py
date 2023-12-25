@@ -3,6 +3,7 @@ import sys
 import re
 import os
 import requests
+import shutil
 
 # **************
 # * Constants
@@ -116,8 +117,32 @@ def is_user_game_format(string):
     pattern = r"^[a-z0-9\-_]+/[a-z0-9\-_]+$"
     return re.match(pattern, string) is not None
 
+# * Checking and installing itch butler
+
+
+def is_application_installed(app_name):
+    try:
+        subprocess.run([app_name, "--version"], check=True)
+        return True
+    except Exception:
+        return False
+
+
+def install_application(download_url, install_path, unzip=True):
+    try:
+        subprocess.run(["curl", "-L", download_url, "-o", install_path], check=True)
+        print(f"Installed {install_path} successfully.")
+        if (unzip):
+            shutil.unpack_archive(install_path, extract_dir=".", format="zip")
+            print(f"Unzipped {install_path} successfully.")
+            os.remove(install_path)
+    except Exception as e:
+        print(TColors.FAIL+"Error occurred when trying to install butler."+TColors.END)
+        print(TColors.WARNING+f"Exception: {e}"+TColors.END)
+        sys.exit(int(re.search(r'\[Errno (\d+)\]', str(e)).group(1)))
 
 # * Other platforms release
+
 
 def discord(currVersion, DiscordHook, Platform, Apps, Body):
     try:
@@ -135,6 +160,17 @@ def itch(currVersion, ItchSiteName, Platform, Directory=""):
         "Linux": "linux",
         "Mac": "mac"
     }
+    if not is_application_installed("butler"):
+        system_platform = sys.platform
+        if system_platform == "win32":
+            install_application("https://broth.itch.ovh/butler/windows-amd64/LATEST/archive/default", "butler.zip")
+        elif system_platform == "linux":
+            install_application("https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default", "butler.zip")
+        elif system_platform == "darwin":
+            install_application("https://broth.itch.ovh/butler/darwin-amd64/LATEST/archive/default", "butler.zip")
+        else:
+            print(TColors.FAIL+"Unsupported platform, install butler manually"+TColors.END)
+            sys.exit(1)
     if not is_version_format(currVersion):
         print(TColors.WARNING+"Wrong version format"+TColors.END)
     elif not is_user_game_format(ItchSiteName):
