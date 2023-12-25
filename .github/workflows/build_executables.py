@@ -27,7 +27,7 @@ def build_for_mac():
 
 # Function to build executables for Windows
 def build_for_windows():
-    build_command = "python -m PyInstaller --onefile --icon=Butler.ico Butler.py"
+    build_command = "python -m PyInstaller --onefile --version-file=Version.txt --icon=Butler.ico Butler.py"
     try:
         # skipcq: BAN-B602
         subprocess.run(build_command, shell=True, check=True)
