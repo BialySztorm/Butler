@@ -75,7 +75,7 @@ class Main:
                 parts[i] = '0'
 
             self._version = '.'.join(parts)
-        else:
+        elif index_to_change != len(parts):
             print(TColors.WARNING+f"Nr: {index_to_change} is a wrong version index"+TColors.END)
 
     # **************
