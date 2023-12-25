@@ -129,7 +129,7 @@ def discord(currVersion, DiscordHook, Platform, Apps, Body):
         print(TColors.WARNING+f"Exception: {e}"+TColors.END)
 
 
-def itch(currVersion, ItchSiteName, Platform, Directory=None):
+def itch(currVersion, ItchSiteName, Platform, Directory=""):
     os_mapping = {
         "Windows": "win",
         "Linux": "linux",
