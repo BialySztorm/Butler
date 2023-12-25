@@ -45,7 +45,8 @@ def create_clear_data_files():
                  "ITCH_SITE_NAME:=None\n"
                  "PROJECT_NAME:=None\n"
                  "DISCORD_HOOK:=None\n"
-                 "GITHUB_API_TOKEN:=None"
+                 "GITHUB_API_TOKEN:=None\n"
+                 "GPG_KEY_ID:=None\n"
                  )
 
     }

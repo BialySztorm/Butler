@@ -4,17 +4,22 @@ import os
 from Butler_lib import TColors, OsMapping, read_env_file
 from Butler_lib import get_repository_info
 from tqdm import tqdm
+import subprocess
 
 
 # **************
 # * Subprocesses
 # **************
 
-# Function to create a GitHub release
-def create_github_release(repo_owner, repo_name, access_token, tag_name, commit, name, body, zip_paths=None, draft=True, prerelease=False):
+def create_github_release(repo_owner, repo_name, access_token, tag_name, commit, name, body, zip_paths=None, draft=True, prerelease=False, gpg_key_id=None):
     print("Creating release...")
     # Define the URL and headers for the GitHub API request
     url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/releases"
+
+    if gpg_key_id:
+        sign_command = f'git commit -S -m "Release {tag_name}"'
+        subprocess.run(sign_command, shell=True, check=True)
+
     headers = {
         "Authorization": f"token {access_token}",
         "Accept": "application/vnd.github.v3+json"
@@ -160,32 +165,36 @@ def delete_zip_archive(src_dirs):
 # * Main function
 # **************
 
-def github(ProjectName: str, Version: str, Platforms: list[str], Body="", Draft=True, Prerelease=False, Commit: str = None, access_token=read_env_file()["GITHUB_API_TOKEN"]):
+def github(project_name: str, version: str, platforms: list[str], body="", draft=True, prerelease=False, commit: str = None, access_token=read_env_file()["GITHUB_API_TOKEN"], gpg_key=read_env_file()["GPG_KEY_ID"]):
     """
     Manage github releases.
 
     Parameters:
-        ProjectName (str): Name of project
-        Version (str): Version of release
-        Platforms list(str): List of platforms to add assets
-        Body (str): Body of release
-        Draft (bool): Add as release?
-        Prerelease (bool): Add as prerelease?
-        Commit (str): Commit or branch id
-        TokenPath (str): Path to github token
+        project_name (str): Name of project
+        version (str): version of release
+        platforms list(str): List of platforms to add assets
+        body (str): body of release
+        draft (bool): Add as release?
+        prerelease (bool): Add as prerelease?
+        commit (str): commit or branch id
+        access_token (str): string with access token
+        gpg_key (str): GPG key to add
     """
     repo_owner, repo_name, current_commit = get_repository_info()
     if not repo_owner or not repo_name:
         print(TColors.FAIL+"Failed to get repository information."+TColors.END)
         return
 
-    if Commit:
-        current_commit = Commit
+    if commit:
+        current_commit = commit
 
-    zips_paths = create_zip_archive(Platforms, ProjectName)
+    # access_token = get_access_token(TokenPath)
+    # print(access_token)
+
+    zips_paths = create_zip_archive(platforms, project_name)
     print("Created files: "+", ".join(zips_paths))
-    if not check_release_exists(repo_owner, repo_name, access_token, "v"+Version, zips_paths):
-        create_github_release(repo_owner, repo_name, access_token, "v"+Version, current_commit, "v"+Version, Body, zips_paths, Draft, Prerelease)
+    if not check_release_exists(repo_owner, repo_name, access_token, "v"+version, zips_paths):
+        create_github_release(repo_owner, repo_name, access_token, "v"+version, current_commit, "v"+version, body, zips_paths, draft, prerelease)
     print("Tidying up...")
     delete_zip_archive(zips_paths)
     print(TColors.OK_GREEN+"Github stuff is Done!"+TColors.END)
