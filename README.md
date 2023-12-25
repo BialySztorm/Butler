@@ -11,7 +11,7 @@ To start the script paste in command line "python Butler.py", choose release pla
 
 ## Prerequisite for binary file
 1. itch:
- - [Butler](https://itchio.itch.io/butler) - Downloaded and added to PATH or in the same dir
+ - [Butler](https://itchio.itch.io/butler) - Downloaded and added to PATH (optional, for faster availability)
  - ITCH_SITE_NAME:=[Site name](https://itch.io/docs/butler/pushing.html) in .env
 
 2. Discord:
@@ -33,7 +33,7 @@ To start the script paste in command line "python Butler.py", choose release pla
  - [keyboard](https://pypi.org/project/keyboard/), [os](https://docs.python.org/3/library/os.html) & [sys](https://docs.python.org/3/library/sys.html) python modules
 
 1. itch:
- - [Butler](https://itchio.itch.io/butler) - Downloaded and added to PATH or in the same dir
+ - [Butler](https://itchio.itch.io/butler) - Downloaded and added to PATH (optional, for faster availability)
  - ITCH_SITE_NAME:=[Site name](https://itch.io/docs/butler/pushing.html) in .env
 
 2. Discord:
