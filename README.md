@@ -5,8 +5,6 @@
 
 Simple drag all files to your build directory(all build files should be under child directory with platform name), complete the prerequisite for chosen platforms, if you are using python script comment things you don't gonna use and you are ready to go.
 
-You can easy customize constants if you want in Butler_constants.py
-
 To start the script paste in command line "python Butler.py", choose release platform, select the version change you wanna do, and next everything gonna do for you automatically.
 
 ## Prerequisite for binary file
