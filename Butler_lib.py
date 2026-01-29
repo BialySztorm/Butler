@@ -164,11 +164,11 @@ def itch(currVersion, ItchSiteName, Platform, Directory=""):
     if not is_application_installed("butler"):
         system_platform = sys.platform
         if system_platform == "win32":
-            install_application("https://broth.itch.ovh/butler/windows-amd64/LATEST/archive/default", "butler.zip")
+            install_application("https://broth.itch.zone/butler/windows-amd64/LATEST/archive/default", "butler.zip")
         elif system_platform == "linux":
-            install_application("https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default", "butler.zip")
+            install_application("https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default", "butler.zip")
         elif system_platform == "darwin":
-            install_application("https://broth.itch.ovh/butler/darwin-amd64/LATEST/archive/default", "butler.zip")
+            install_application("https://broth.itch.zone/butler/darwin-amd64/LATEST/archive/default", "butler.zip")
         else:
             print(TColors.FAIL+"Unsupported platform, install butler manually"+TColors.END)
             sys.exit(1)
