@@ -158,7 +158,8 @@ def itch(currVersion, ItchSiteName, Platform, Directory=""):
     os_mapping = {
         "Windows": "win",
         "Linux": "linux",
-        "Mac": "mac"
+        "Mac": "mac",
+        "Web": "win-linux-mac-html"
     }
     if not is_application_installed("butler"):
         system_platform = sys.platform

@@ -32,6 +32,8 @@ class Main:
                 "Windows",
                 "Linux",
                 "Mac",
+                "Web",
+                "All at once (Web excluded)",
                 "All at once",
                 "Exit"
             ]
@@ -247,12 +249,17 @@ class Main:
                     # Release based on platform and version
                     if self._selected_platform == "Butler":
                         self.butler(body)
-                    elif self._selected_platform in {"Windows", "Linux", "Mac"}:
+                    elif self._selected_platform in {"Windows", "Linux", "Mac", "Web"}:
                         self.release(body, self._selected_platform)
+                    elif self._selected_platform == "All at once (Web excluded)":
+                        self.release(body, "Windows")
+                        self.release(body, "Linux")
+                        self.release(body, "Mac")
                     elif self._selected_platform == "All at once":
                         self.release(body, "Windows")
                         self.release(body, "Linux")
                         self.release(body, "Mac")
+                        self.release(body, "Web")
 
                     # Save the new version to 'Butler_version.txt' file
                     with open("Butler_version.txt", "w") as file:
