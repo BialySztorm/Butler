@@ -24,7 +24,7 @@ class Main:
                 "Windows",
                 "Linux",
                 "Mac",
-                "All at once",
+                "All at once (Web excluded)",
                 "Exit"
             ]
         else:
